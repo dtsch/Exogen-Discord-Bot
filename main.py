@@ -1,6 +1,6 @@
+import os
 import discord
 from discord.ext import commands
-
 
 
 def get_prefix(bot_client, message):
@@ -18,7 +18,6 @@ bot = commands.Bot(
 cogs = ['cogs.basic', 'cogs.embed', 'cogs.calcs']
 
 
-
 @bot.event
 async def on_ready():
     print("The bot is ready!")
@@ -30,4 +29,5 @@ async def on_ready():
         bot.load_extension(cog)
     return
 
-bot.run(TOKEN)
+token = os.environ.get("DISCORD_TOKEN")
+bot.run(token)
