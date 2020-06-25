@@ -15,7 +15,7 @@ bot = commands.Bot(
     case_insensitive=True
 )
 
-cogs = ['cogs.basic', 'cogs.embed', 'cogs.calcs']
+cogs = ['cogs.calcs']
 
 
 @bot.event
