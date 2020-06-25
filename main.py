@@ -11,7 +11,7 @@ def get_prefix(bot_client, message):
 bot = commands.Bot(
     command_prefix=get_prefix,
     description='Bot to help Exogen players make calculations',
-    owner_id=725342626013904977,
+    owner_id=os.environ.get("OWNER_ID"),
     case_insensitive=True
 )
 
