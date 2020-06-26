@@ -1,6 +1,9 @@
-import os
+import json
 import discord
 from discord.ext import commands
+
+with open('config.json') as config_file:
+    secrets = json.load(config_file)
 
 
 def get_prefix(bot_client, message):
@@ -11,11 +14,17 @@ def get_prefix(bot_client, message):
 bot = commands.Bot(
     command_prefix=get_prefix,
     description='Bot to help Exogen players make calculations',
-    owner_id=os.environ.get("OWNER_ID"),
+    owner_id=secrets['owner_id'],
     case_insensitive=True
 )
 
 cogs = ['cogs.calcs']
+
+
+@bot.command(name='eval')
+@commands.is_owner()
+async def _eval(ctx, *, code):
+    await ctx.send(eval(code))
 
 
 @bot.event
@@ -29,5 +38,4 @@ async def on_ready():
         bot.load_extension(cog)
     return
 
-token = os.environ.get("DISCORD_TOKEN")
-bot.run(token)
+bot.run(secrets['token'])
