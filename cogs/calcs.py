@@ -9,26 +9,28 @@ class Calculation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    # command info
     @commands.command(
         name='distance',
         description='Command to measure distance between two systems, given their rad-Z coordinates',
         aliases=['d'],
         usage='<rad-Z 1> <rad-Z 2>'
     )
+    # function that command runs
     async def distance(self, ctx, coord1, coord2):
-        if coord1 == '':
+        if coord1 == '':  # checking for blank arg
             await ctx.send(content="You need to list the first system's coordinates")
             pass
-        elif coord2 == '':
+        elif coord2 == '':  # checking for blank arg
             await ctx.send(content="You need to list the second system's coordinates")
             pass
-        elif not re.search(r"\d{5}-\d{5}", coord1):
+        elif not re.search(r"\d{5}-\d{5}", coord1):  # checking for arg format
             await ctx.send(content="You must enter the coordinates in the #####-##### format")
             pass
-        elif not re.search(r"\d{5}-\d{5}", coord2):
+        elif not re.search(r"\d{5}-\d{5}", coord2):  # checking for arg format
             await ctx.send(content="You must enter the coordinates in the #####-##### format")
             pass
-        else:
+        else:  # if passes checks, parses args for calculation
             r1 = int(re.search(r"^\d{5}", coord1).group(0))
             z1 = int(re.search(r"\d{5}$", coord1).group(0))
             r2 = int(re.search(r"^\d{5}", coord2).group(0))
@@ -39,6 +41,7 @@ class Calculation(commands.Cog):
             pass
         return
 
+    # command info
     @commands.command(
         name='missions',
         description='Command to calculate mission times to a system in "<days>, hh:mm:ss" format, '
@@ -46,39 +49,32 @@ class Calculation(commands.Cog):
         aliases=['m'],
         usage='<rad-Z> <# of stars+planets> <Subroutine Scanner upgrade (T/F)>'
     )
+    # function that command runs
     async def mission(self, ctx, coord, bodies=0, upgrade=False):
-        if coord == '':
+        if coord == '':  # checking for blank arg
             await ctx.send(content="You need to list the system's coordinates")
             pass
-        elif not re.search(r"\d{5}-\d{5}", coord):
+        elif not re.search(r"\d{5}-\d{5}", coord):  # checking for arg format
             await ctx.send(content="You must enter the coordinates in the #####-##### format")
             pass
-        elif not isinstance(bodies, int):
+        elif not isinstance(bodies, int):  # checking for arg format
             await ctx.send(content="You must enter the # of stars and planets as an integer")
             pass
-        else:
+        else:  # if passes checks, parses args for calculation
             # r = int(re.search(r"^\d{5}", coord).group(0))
             z = int(re.search(r"\d{5}$", coord).group(0))
             z_hours = np.floor(z/10)
             probe_time = dt.timedelta(hours=int(z_hours + np.floor(bodies/2)),
                                       minutes=int(((z/10) - z_hours) * 60 + (bodies % 2) * 30))
-            # probe_hours = int(z_hours + b_hours)
-            # probe_mins = int(((z/10) - z_hours) * 60 + (bodies % 2) * 30)
             pioneer_time = dt.timedelta(hours=int(z_hours + 6), minutes=int(((z/10) - z_hours) * 60))
-            # pioneer_hours = int(z_hours + 6)
-            # pioneer_mins = int(((z/10) - z_hours) * 60)
             pioneer_xe = np.ceil(z/10) * 0.1
-            if upgrade:
+            if upgrade:  # checks if player set upgrade value to T, may need to make this more robust
                 pioneer_w = 2
             else:
                 pioneer_w = 3
             fs_time = dt.timedelta(hours=int(z_hours), minutes=int(((z/10) - z_hours) * 60))
-            # fs_hours = int(z_hours)
-            # fs_mins = int(((z/10) - z_hours) * 60)
             fs_xe = (np.ceil(z/10) * 0.2) + 1
             sos_time = dt.timedelta(hours=int(z_hours + 6), minutes=int(((z/10) - z_hours) * 60))
-            # sos_hours = int(z_hours + 6)
-            # sos_mins = int(((z/10) - z_hours) * 60)
             sos_xe = (np.ceil(z/10) * 0.3) + 3
             await ctx.send("A probe to {} will take {} and cost 3 Plasteel\n"
                            "A pioneer to {} will take {} and cost {} Xe, {} Water, 2 Plasteel\n"
@@ -92,15 +88,6 @@ class Calculation(commands.Cog):
             pass
 
         return
-
-
-    # @commands.command(
-    #     name='',
-    #     description=' command',
-    #     aliases=[]
-    # )
-    # async def help_command(self, ctx, cog='all'):
-    #     return
 
 
 def setup(bot):
