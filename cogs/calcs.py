@@ -12,7 +12,7 @@ class Calculation(commands.Cog):
     @commands.command(
         name='distance',
         description='Command to measure distance between two systems, given their rad-Z coordinates',
-        aliases=['d', 'dist'],
+        aliases=['d'],
         usage='<rad-Z 1> <rad-Z 2>'
     )
     async def distance(self, ctx, coord1, coord2):
