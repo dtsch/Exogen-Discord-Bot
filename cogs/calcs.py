@@ -34,7 +34,7 @@ class Calculation(commands.Cog):
             r2 = int(re.search(r"^\d{5}", coord2).group(0))
             z2 = int(re.search(r"\d{5}$", coord2).group(0))
             dist = np.around(np.sqrt((np.square(z1) + np.square(z2)) -
-                                     2 * (z1 * z2 * (np.cos(r1 / 10000 - r2 / 10000)))) / 10, 1)
+                                     2 * (z1 * z2 * (np.cos((r1 - r2) / 10000)))) / 10, 1)
             await ctx.send("The distance between {} and {} is {}JU".format(coord1, coord2, dist))
             pass
         return
