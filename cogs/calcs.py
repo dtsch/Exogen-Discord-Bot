@@ -77,7 +77,7 @@ class Calculation(commands.Cog):
             sos_time = dt.timedelta(hours=int(z_hours + 6), minutes=int(((z/10) - z_hours) * 60))
             sos_xe = (np.ceil(z/10) * 0.3) + 3
             sv_time = fs_time + dt.timedelta(hours=72)
-            sv_xe = (np.ceil(z/10) * 0.2) + 1
+            sv_xe = (np.ceil(z/10) * 0.2) + 1  # will have to check if system is anomaly once connected to server
             await ctx.send("A probe to {} will take {} and cost 3 Plasteel\n"
                            "A pioneer to {} will take {} and cost {} Xe, {} Water, 2 Plasteel\n"
                            "A fuel station to {} will take {} and cost {} Xe, 3 Water, 3 Ore, 3 Plasteel\n"
