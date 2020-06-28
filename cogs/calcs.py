@@ -76,15 +76,20 @@ class Calculation(commands.Cog):
             fs_xe = (np.ceil(z/10) * 0.2) + 1
             sos_time = dt.timedelta(hours=int(z_hours + 6), minutes=int(((z/10) - z_hours) * 60))
             sos_xe = (np.ceil(z/10) * 0.3) + 3
+            sv_time = fs_time + dt.timedelta(hours=72)
+            sv_xe = (np.ceil(z/10) * 0.2) + 1
             await ctx.send("A probe to {} will take {} and cost 3 Plasteel\n"
                            "A pioneer to {} will take {} and cost {} Xe, {} Water, 2 Plasteel\n"
                            "A fuel station to {} will take {} and cost {} Xe, 3 Water, 3 Ore, 3 Plasteel\n"
                            "A small orbital station to {} will take {} and cost {} Xe, 3 Water, 3 Ore, "
-                           "1 Plasteel, 10 Licenses"
+                           "1 Plasteel, 10 Licenses\n"
+                           "A science vessel to {} will take {} and cost {} Xe, 3 Water, 1 Ore, 10 Plasteel, "
+                           "10 Licenses"
                            .format(coord, str(probe_time),
                                    coord, str(pioneer_time), pioneer_xe, pioneer_w,
                                    coord, str(fs_time), fs_xe,
-                                   coord, str(sos_time), sos_xe))
+                                   coord, str(sos_time), sos_xe,
+                                   coord, str(sv_time), sv_xe))
             pass
 
         return
