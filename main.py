@@ -13,16 +13,26 @@ def get_prefix(bot_client, message):
     return commands.when_mentioned_or(*prefixes)(bot_client, message)
 
 
+client = discord.Client
+
 # bot info
 bot = commands.Bot(
     command_prefix=get_prefix,
     description='Bot to help Exogen players make calculations',
-    owner_id=secrets['owner_id'],
     case_insensitive=True
 )
 
 # gathering the commands
-cogs = ['cogs.calcs']
+cogs = [
+    'cogs.calcs'
+    # , 'cogs.mod'
+]
+
+
+@bot.command(pass_context=True)
+async def assign(ctx, role: discord.Role, member: discord.Member = None):
+    member = member or ctx.message.author
+    await member.add_roles(role)
 
 
 # limiting the eval command to just the bot owner
