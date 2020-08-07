@@ -11,6 +11,7 @@ class Moderation(commands.Cog):
 
     @commands.command(pass_context=True)
     async def mod_fcn(self, ctx):
+        # add some function here
         return
 
 

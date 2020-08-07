@@ -63,23 +63,23 @@ class Calculation(commands.Cog):
         else:  # if passes checks, parses args for calculation
             # r = int(re.search(r"^\d{5}", coord).group(0))
             z = int(re.search(r"\d{5}$", coord).group(0))
-            z_hours = np.floor(z/10)
-            probe_time = dt.timedelta(hours=int(z_hours + np.floor(bodies/2)),
-                                      minutes=int(((z/10) - z_hours) * 60 + (bodies % 2) * 30))
-            pioneer_time = dt.timedelta(hours=int(z_hours + 6), minutes=int(((z/10) - z_hours) * 60))
-            pioneer_xe = np.ceil(z/10) * 0.1
+            z_hours = np.floor(z / 10)
+            probe_time = dt.timedelta(hours=int(z_hours + np.floor(bodies / 2)),
+                                      minutes=int(((z / 10) - z_hours) * 60 + (bodies % 2) * 30))
+            pioneer_time = dt.timedelta(hours=int(z_hours + 6), minutes=int(((z / 10) - z_hours) * 60))
+            pioneer_xe = np.ceil(z / 10) * 0.1
             if upgrade:  # checks if player set upgrade value to T, may need to make this more robust
                 pioneer_w = 2
             else:
                 pioneer_w = 3
-            fs_time = dt.timedelta(hours=int(z_hours), minutes=int(((z/10) - z_hours) * 60))
-            fs_xe = (np.ceil(z/10) * 0.2) + 1
-            sos_time = dt.timedelta(hours=int(z_hours + 6), minutes=int(((z/10) - z_hours) * 60))
-            sos_xe = (np.ceil(z/10) * 0.3) + 3
+            fs_time = dt.timedelta(hours=int(z_hours), minutes=int(((z / 10) - z_hours) * 60))
+            fs_xe = (np.ceil(z / 10) * 0.2) + 1
+            sos_time = dt.timedelta(hours=int(z_hours + 6), minutes=int(((z / 10) - z_hours) * 60))
+            sos_xe = (np.ceil(z / 10) * 0.3) + 3
             sv_time = fs_time + dt.timedelta(hours=72)
-            sv_xe = (np.ceil(z/10) * 0.2) + 1  # will have to check if system is anomaly once connected to server
+            sv_xe = (np.ceil(z / 10) * 0.2) + 1  # will have to check if system is anomaly once connected to server
             mo_time = fs_time + dt.timedelta(hours=168)
-            mo_xe = (np.ceil(z/10) * 0.3) + 1
+            mo_xe = (np.ceil(z / 10) * 0.3) + 1
             await ctx.send("A probe to {} will take {} and cost 3 Plasteel\n"
                            "A pioneer to {} will take {} and cost {} Xe, {} Water, 2 Plasteel\n"
                            "A fuel station to {} will take {} and cost {} Xe, 3 Water, 3 Ore, 3 Plasteel\n"

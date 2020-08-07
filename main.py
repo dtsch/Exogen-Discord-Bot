@@ -25,11 +25,17 @@ bot = commands.Bot(
 # gathering the commands
 cogs = [
     'cogs.calcs'
-    # , 'cogs.mod'
+    , 'cogs.mod'
 ]
 
 
-@bot.command(pass_context=True)
+# command to add a user to a role
+@bot.command(
+    pass_context=True,
+    name="assign",
+    description="Bot assigns designated role to target member, or self if blank, where possible",
+    usage="<role> <member>"
+)
 async def assign(ctx, role: discord.Role, member: discord.Member = None):
     member = member or ctx.message.author
     await member.add_roles(role)
