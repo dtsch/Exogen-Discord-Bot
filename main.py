@@ -18,7 +18,7 @@ client = discord.Client
 # bot info
 bot = commands.Bot(
     command_prefix=get_prefix,
-    description='Bot to help Exogen players make calculations',
+    description='Bot to help Exogen players make calculations, and for mods/admins to manage the server.',
     case_insensitive=True
 )
 

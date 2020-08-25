@@ -19,16 +19,16 @@ class Calculation(commands.Cog):
     # function that command runs
     async def distance(self, ctx, coord1, coord2):
         if coord1 == '':  # checking for blank arg
-            await ctx.send(content="You need to list the first system's coordinates")
+            await ctx.send(content="`You need to list the first system's coordinates.`")
             pass
         elif coord2 == '':  # checking for blank arg
-            await ctx.send(content="You need to list the second system's coordinates")
+            await ctx.send(content="`You need to list the second system's coordinates.`")
             pass
         elif not re.search(r"\d{5}-\d{5}", coord1):  # checking for arg format
-            await ctx.send(content="You must enter the coordinates in the #####-##### format")
+            await ctx.send(content="`You must enter the coordinates in the #####-##### format.`")
             pass
         elif not re.search(r"\d{5}-\d{5}", coord2):  # checking for arg format
-            await ctx.send(content="You must enter the coordinates in the #####-##### format")
+            await ctx.send(content="`You must enter the coordinates in the #####-##### format.`")
             pass
         else:  # if passes checks, parses args for calculation
             r1 = int(re.search(r"^\d{5}", coord1).group(0))
@@ -37,7 +37,7 @@ class Calculation(commands.Cog):
             z2 = int(re.search(r"\d{5}$", coord2).group(0))
             dist = np.around(np.sqrt((np.square(z1) + np.square(z2)) -
                                      2 * (z1 * z2 * (np.cos((r1 - r2) / 10000)))) / 10, 1)
-            await ctx.send("The distance between {} and {} is {}JU".format(coord1, coord2, dist))
+            await ctx.send("`The distance between {} and {} is {}JU.`".format(coord1, coord2, dist))
             pass
         return
 
@@ -52,13 +52,13 @@ class Calculation(commands.Cog):
     # function that command runs
     async def mission(self, ctx, coord, bodies=0, upgrade=False):
         if coord == '':  # checking for blank arg
-            await ctx.send(content="You need to list the system's coordinates")
+            await ctx.send(content="`You need to list the system's coordinates`")
             pass
         elif not re.search(r"\d{5}-\d{5}", coord):  # checking for arg format
-            await ctx.send(content="You must enter the coordinates in the #####-##### format")
+            await ctx.send(content="`You must enter the coordinates in the #####-##### format`")
             pass
         elif not isinstance(bodies, int):  # checking for arg format
-            await ctx.send(content="You must enter the # of stars and planets as an integer")
+            await ctx.send(content="`You must enter the # of stars and planets as an integer`")
             pass
         else:  # if passes checks, parses args for calculation
             # r = int(re.search(r"^\d{5}", coord).group(0))
@@ -80,7 +80,7 @@ class Calculation(commands.Cog):
             sv_xe = (np.ceil(z / 10) * 0.2) + 1  # will have to check if system is anomaly once connected to server
             mo_time = fs_time + dt.timedelta(hours=168)
             mo_xe = (np.ceil(z / 10) * 0.3) + 1
-            await ctx.send("A probe to {} will take {} and cost 3 Plasteel\n"
+            await ctx.send("```A probe to {} will take {} and cost 3 Plasteel\n"
                            "A pioneer to {} will take {} and cost {} Xe, {} Water, 2 Plasteel\n"
                            "A fuel station to {} will take {} and cost {} Xe, 3 Water, 3 Ore, 3 Plasteel\n"
                            "A small orbital station to {} will take {} and cost {} Xe, 3 Water, 3 Ore, "
@@ -88,7 +88,7 @@ class Calculation(commands.Cog):
                            "A science vessel to {} will take {} and cost {} Xe, 3 Water, 1 Ore, 10 Plasteel, "
                            "10 Licenses\n"
                            "A mining operation to {} will take {} and cost {} Xe, 5 Water, 5 Ore, 5 Plasteel, "
-                           "5 Licenses"
+                           "5 Licenses```"
                            .format(coord, str(probe_time),
                                    coord, str(pioneer_time), pioneer_xe, pioneer_w,
                                    coord, str(fs_time), fs_xe,
