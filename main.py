@@ -36,9 +36,25 @@ cogs = [
     description="Bot assigns designated role to target member, or self if blank, where possible",
     usage="<role> <member>"
 )
+@commands.has_permissions(manage_roles=True)
 async def assign(ctx, role: discord.Role, member: discord.Member = None):
     member = member or ctx.message.author
     await member.add_roles(role)
+    await ctx.send(str(member) + " was added to " + str(role) + ".")
+
+
+# command to remove a user to a role
+@bot.command(
+    pass_context=True,
+    name="remove",
+    description="Bot removes designated role to target member, or self if blank, where possible",
+    usage="<role> <member>"
+)
+@commands.has_permissions(manage_roles=True)
+async def assign(ctx, role: discord.Role, member: discord.Member = None):
+    member = member or ctx.message.author
+    await member.remove_roles(role)
+    await ctx.send(str(member) + " was removed from " + str(role) + ".")
 
 
 # limiting the eval command to just the bot owner
