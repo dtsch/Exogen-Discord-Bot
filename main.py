@@ -25,7 +25,7 @@ bot = commands.Bot(
 # gathering the commands
 cogs = [
     'cogs.calcs'
-    , 'cogs.mod'
+    # , 'cogs.mod'
 ]
 
 
@@ -33,7 +33,8 @@ cogs = [
 @bot.command(
     pass_context=True,
     name="assign",
-    description="Bot assigns designated role to target member, or self if blank, where possible",
+    description="Bot assigns designated role to target member, or self if blank, where possible.\n"
+                "This function is only available to moderators and up.",
     usage="<role> <member>"
 )
 @commands.has_permissions(manage_roles=True)
@@ -47,7 +48,8 @@ async def assign(ctx, role: discord.Role, member: discord.Member = None):
 @bot.command(
     pass_context=True,
     name="remove",
-    description="Bot removes designated role to target member, or self if blank, where possible",
+    description="Bot removes designated role to target member, or self if blank, where possible.\n"
+                "This function is only available to moderators and up.",
     usage="<role> <member>"
 )
 @commands.has_permissions(manage_roles=True)

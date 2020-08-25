@@ -13,7 +13,7 @@ class Calculation(commands.Cog):
     @commands.command(
         name='distance',
         description='Command to measure distance between two systems, given their rad-Z coordinates',
-        aliases=['d'],
+        aliases=['d', 'dz', 'd1'],
         usage='<rad-Z 1> <rad-Z 2>'
     )
     # function that command runs
@@ -46,7 +46,7 @@ class Calculation(commands.Cog):
         name='missions',
         description='Command to calculate mission times to a system in "<days>, hh:mm:ss" format, '
                     'along with associated costs',
-        aliases=['m'],
+        aliases=['m', 'mz', 'm1'],
         usage='<rad-Z> <# of stars+planets> <Subroutine Scanner upgrade (T/F)>'
     )
     # function that command runs
