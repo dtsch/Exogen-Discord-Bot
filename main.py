@@ -44,6 +44,13 @@ async def assign(ctx, role: discord.Role, member: discord.Member = None):
     await ctx.send(str(member) + " was added to " + str(role) + ".")
 
 
+@assign.error
+async def assign_error(error, ctx):
+    if isinstance(error, commands.MissingPermissions):
+        text = "Sorry {}, you do not have permissions to do that!".format(ctx.message.author)
+        await ctx.send(ctx.message.channel, text)
+
+
 # command to remove a user to a role
 @bot.command(
     pass_context=True,
@@ -53,10 +60,17 @@ async def assign(ctx, role: discord.Role, member: discord.Member = None):
     usage="<role> <member>"
 )
 @commands.has_permissions(manage_roles=True)
-async def assign(ctx, role: discord.Role, member: discord.Member = None):
+async def remove(ctx, role: discord.Role, member: discord.Member = None):
     member = member or ctx.message.author
     await member.remove_roles(role)
     await ctx.send(str(member) + " was removed from " + str(role) + ".")
+
+
+@remove.error
+async def remove_error(error, ctx):
+    if isinstance(error, commands.MissingPermissions):
+        text = "Sorry {}, you do not have permissions to do that!".format(ctx.message.author)
+        await ctx.send(ctx.message.channel, text)
 
 
 # limiting the eval command to just the bot owner
@@ -64,6 +78,13 @@ async def assign(ctx, role: discord.Role, member: discord.Member = None):
 @commands.is_owner()
 async def _eval(ctx, *, code):
     await ctx.send(eval(code))
+
+
+@_eval.error
+async def eval_error(error, ctx):
+    if isinstance(error, commands.MissingPermissions):
+        text = "Sorry {}, you do not have permissions to do that!".format(ctx.message.author)
+        await ctx.send(ctx.message.channel, text)
 
 
 # bot start up event
