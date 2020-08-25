@@ -43,7 +43,7 @@ class Calculation(commands.Cog):
                     'along with associated costs',
         aliases=['mission', 'm', 'mz', 'm1'],
         usage='<rad-Z> <# of stars+planets> <Mission (All, Prob/PB, Pioneer/PN, Fuel Station/FS, '
-              'Small Orbital Station/SOS, Science Vessel/SV, Mining Operation/MO)> '
+              'Small Orbital Station/SOS, Science Vessel/SV, Mining Operation/MO, Lunar Base/LB)> '
               '<Subroutine Scanner upgrade (True/False)> <Augmented Workforce upgrade (True/False)> '
               'Subroutine Mining Drones upgrade (True/False)'
     )
@@ -77,12 +77,13 @@ class Calculation(commands.Cog):
                 mo_time = fs_time + dt.timedelta(hours=192)
             else:
                 mo_time = fs_time + dt.timedelta(hours=168)
-
             mo_xe = (np.ceil(z / 10) * 0.3) + 1
             if aw:
                 mo_ore = 0
             else:
                 mo_ore = 5
+            lb_time = fs_time + dt.timedelta(hours=168)
+            lb_xe = (np.ceil(z / 10) * 1)
 
         if mission == 'All':
             await ctx.send("```A Probe to {} will take {} and cost 3 Plasteel\n"
@@ -92,14 +93,17 @@ class Calculation(commands.Cog):
                            "10 Licenses.\n"
                            "A Science Vessel to {} will take {} and cost {} Xe, 3 Water, 1 Ore, 10 Plasteel, "
                            "10 Licenses.\n"
-                           "A Mining Operation to {} will take {} and cost {} Xe, 5 Water, 5 Ore, 5 Plasteel, "
-                           "5 Licenses.```"
+                           "A Mining Operation to {} will take {} and cost {} Xe, 5 Water, {} Ore, 5 Plasteel, "
+                           "5 Licenses.\n"
+                           "A Lunar Base to {} will take {} and cost {} Xe, 25 Water, 75 Ore, 25 Plasteel, "
+                           "25 Licenses.```"
                            .format(coord, str(probe_time)
                                    , coord, str(pioneer_time), pioneer_xe, pioneer_w
                                    , coord, str(fs_time), fs_xe
                                    , coord, str(sos_time), sos_xe
                                    , coord, str(sv_time), sv_xe
-                                   , coord, str(mo_time), mo_xe))
+                                   , coord, str(mo_time), mo_xe, mo_ore
+                                   , coord, str(lb_time), lb_xe))
         elif mission == 'Probe' or mission == 'PB':
             await ctx.send("```A Probe to {} will take {} and cost 3 Plasteel```".format(coord, str(probe_time)))
         elif mission == 'Pioneer' or mission == 'PN':
@@ -119,6 +123,10 @@ class Calculation(commands.Cog):
             await ctx.send(
                 "```A Mining Operation to {} will take {} and cost {} Xe, 5 Water, {} Ore, 5 Plasteel, 5 Licenses.```"
                 .format(coord, str(mo_time), mo_xe, mo_ore))
+        elif mission == 'Lunar Base' or mission == 'LB':
+            await ctx.send(
+                "```A Lunar Base to {} will take {} and cost {} Xe, 25 Water, 75 Ore, 25 Plasteel, 25 Licenses.```"
+                .format(coord, str(lb_time), lb_xe))
         else:
             await ctx.send(content="```***ERROR*** You must enter a viable mission type, abbreviation, or 'All'.```")
         return
