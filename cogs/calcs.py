@@ -245,73 +245,74 @@ class Calculation(commands.Cog):
                                      2 * (z1 * z2 * (np.cos((r1 - r2) / 10000)))) / 10, 1)
             dist_hours = np.floor(dist/10)
             probe_time = dt.timedelta(hours=int(dist_hours + np.floor(bodies / 2)),
-                                      minutes=int(((z / 10) - dist_hours) * 60 + (bodies % 2) * 30))
-            pioneer_time = dt.timedelta(hours=int(dist_hours + 6), minutes=int(((z / 10) - dist_hours) * 60))
-            pioneer_xe = np.ceil(z / 10) * 0.1
+                                      minutes=int(((dist / 10) - dist_hours) * 60 + (bodies % 2) * 30))
+            pioneer_time = dt.timedelta(hours=int(dist_hours + 6), minutes=int(((dist / 10) - dist_hours) * 60))
+            pioneer_xe = np.ceil(dist / 10) * 0.1
             if ss:  # checks if player set upgrade value to T, may need to make this more robust
                 pioneer_w = 2
             else:
                 pioneer_w = 3
-            fs_time = dt.timedelta(hours=int(dist_hours), minutes=int(((z / 10) - dist_hours) * 60))
-            fs_xe = (np.ceil(z / 10) * 0.2) + 1
-            sos_time = dt.timedelta(hours=int(dist_hours + 6), minutes=int(((z / 10) - dist_hours) * 60))
-            sos_xe = (np.ceil(z / 10) * 0.3) + 3
+            fs_time = dt.timedelta(hours=int(dist_hours), minutes=int(((dist / 10) - dist_hours) * 60))
+            fs_xe = (np.ceil(dist / 10) * 0.2) + 1
+            sos_time = dt.timedelta(hours=int(dist_hours + 6), minutes=int(((dist / 10) - dist_hours) * 60))
+            sos_xe = (np.ceil(dist / 10) * 0.3) + 3
             sv_time = fs_time + dt.timedelta(hours=72)
-            sv_xe = (np.ceil(z / 10) * 0.2) + 1  # will have to check if system is anomaly once connected to server
+            sv_xe = (np.ceil(dist / 10) * 0.2) + 1  # will have to check if system is anomaly once connected to server
             if smd:
                 mo_time = fs_time + dt.timedelta(hours=192)
             else:
                 mo_time = fs_time + dt.timedelta(hours=168)
-            mo_xe = (np.ceil(z / 10) * 0.3) + 1
+            mo_xe = (np.ceil(dist / 10) * 0.3) + 1
             if aw:
                 mo_ore = 0
             else:
                 mo_ore = 5
             lb_time = fs_time + dt.timedelta(hours=168)
-            lb_xe = (np.ceil(z / 10) * 1)
+            lb_xe = (np.ceil(dist / 10) * 1)
 
         if mission == 'All':
-            await ctx.send("```A Probe to {} will take {} and cost 3 Plasteel\n"
-                           "A Pioneer to {} will take {} and cost {} Xe, {} Water, 2 Plasteel.\n"
-                           "A Fuel Station to {} will take {} and cost {} Xe, 3 Water, 3 Ore, 3 Plasteel.\n"
-                           "A Small Orbital Station to {} will take {} and cost {} Xe, 3 Water, 3 Ore, 1 Plasteel, "
+            await ctx.send("```A Probe from {} to {} will take {} and cost 3 Plasteel\n"
+                           "A Pioneer from {} to {} will take {} and cost {} Xe, {} Water, 2 Plasteel.\n"
+                           "A Fuel Station from {} to {} will take {} and cost {} Xe, 3 Water, 3 Ore, 3 Plasteel.\n"
+                           "A Small Orbital Station from {} to {} will take {} and cost {} Xe, 3 Water, 3 Ore, "
+                           "1 Plasteel, 10 Licenses.\n"
+                           "A Science Vessel from {} to {} will take {} and cost {} Xe, 3 Water, 1 Ore, 10 Plasteel, "
                            "10 Licenses.\n"
-                           "A Science Vessel to {} will take {} and cost {} Xe, 3 Water, 1 Ore, 10 Plasteel, "
-                           "10 Licenses.\n"
-                           "A Mining Operation to {} will take {} and cost {} Xe, 5 Water, {} Ore, 5 Plasteel, "
+                           "A Mining Operation from {} to {} will take {} and cost {} Xe, 5 Water, {} Ore, 5 Plasteel, "
                            "5 Licenses.\n"
-                           "A Lunar Base to {} will take {} and cost {} Xe, 25 Water, 75 Ore, 25 Plasteel, "
+                           "A Lunar Base from {} to {} will take {} and cost {} Xe, 25 Water, 75 Ore, 25 Plasteel, "
                            "25 Licenses.```"
-                           .format(coord, str(probe_time)
-                                   , coord, str(pioneer_time), pioneer_xe, pioneer_w
-                                   , coord, str(fs_time), fs_xe
-                                   , coord, str(sos_time), sos_xe
-                                   , coord, str(sv_time), sv_xe
-                                   , coord, str(mo_time), mo_xe, mo_ore
-                                   , coord, str(lb_time), lb_xe))
+                           .format(coord1, coord2, str(probe_time)
+                                   , coord1, coord2, str(pioneer_time), pioneer_xe, pioneer_w
+                                   , coord1, coord2, str(fs_time), fs_xe
+                                   , coord1, coord2, str(sos_time), sos_xe
+                                   , coord1, coord2, str(sv_time), sv_xe
+                                   , coord1, coord2, str(mo_time), mo_xe, mo_ore
+                                   , coord1, coord2, str(lb_time), lb_xe))
         elif mission == 'Probe' or mission == 'PB':
-            await ctx.send("```A Probe to {} will take {} and cost 3 Plasteel```".format(coord, str(probe_time)))
+            await ctx.send("```A Probe from {} to {} will take {} and cost 3 Plasteel```".format(coord1, coord2,
+                                                                                                 str(probe_time)))
         elif mission == 'Pioneer' or mission == 'PN':
-            await ctx.send("```A Pioneer to {} will take {} and cost {} Xe, {} Water, 2 Plasteel.```"
-                           .format(coord, str(pioneer_time), pioneer_xe, pioneer_w))
+            await ctx.send("```A Pioneer from {} to {} will take {} and cost {} Xe, {} Water, 2 Plasteel.```"
+                           .format(coord1, coord2, str(pioneer_time), pioneer_xe, pioneer_w))
         elif mission == 'Fuel Station' or mission == 'FS':
-            await ctx.send("```A Fuel Station to {} will take {} and cost {} Xe, 3 Water, 3 Ore, 3 Plasteel.```"
-                           .format(coord, str(fs_time), fs_xe))
+            await ctx.send("```A Fuel Station from {} to {} will take {} and cost {} Xe, 3 Water, 3 Ore, 3 Plasteel.```"
+                           .format(coord1, coord2, str(fs_time), fs_xe))
         elif mission == 'Small Orbital Station' or mission == 'SOS':
-            await ctx.send("```A Small Orbital Station to {} will take {} and cost {} Xe, 3 Water, 3 Ore, 1 Plasteel, "
-                           "10 Licenses.```".format(coord, str(sos_time), sos_xe))
+            await ctx.send("```A Small Orbital Station from {} to {} will take {} and cost {} Xe, 3 Water, 3 Ore, "
+                           "1 Plasteel, 10 Licenses.```".format(coord1, coord2, str(sos_time), sos_xe))
         elif mission == 'Science Vessel' or mission == 'SV':
             await ctx.send(
-                "```A Science Vessel to {} will take {} and cost {} Xe, 3 Water, 1 Ore, 10 Plasteel, 10 Licenses.```"
-                .format(coord, str(sv_time), sv_xe))
+                "```A Science Vessel from {} to {} will take {} and cost {} Xe, 3 Water, 1 Ore, 10 Plasteel, "
+                "10 Licenses.```".format(coord1, coord2, str(sv_time), sv_xe))
         elif mission == 'Mining Operation' or mission == 'MO':
             await ctx.send(
-                "```A Mining Operation to {} will take {} and cost {} Xe, 5 Water, {} Ore, 5 Plasteel, 5 Licenses.```"
-                .format(coord, str(mo_time), mo_xe, mo_ore))
+                "```A Mining Operation from {} to {} will take {} and cost {} Xe, 5 Water, {} Ore, 5 Plasteel, "
+                "5 Licenses.```".format(coord1, coord2, str(mo_time), mo_xe, mo_ore))
         elif mission == 'Lunar Base' or mission == 'LB':
             await ctx.send(
-                "```A Lunar Base to {} will take {} and cost {} Xe, 25 Water, 75 Ore, 25 Plasteel, 25 Licenses.```"
-                .format(coord, str(lb_time), lb_xe))
+                "```A Lunar Base from {} to {} will take {} and cost {} Xe, 25 Water, 75 Ore, 25 Plasteel, "
+                "25 Licenses.```".format(coord1, coord2, str(lb_time), lb_xe))
         else:
             await ctx.send(content="```***ERROR*** You must enter a viable mission type, abbreviation, or 'All'.```")
         return
