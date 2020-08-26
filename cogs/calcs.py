@@ -253,22 +253,22 @@ class Calculation(commands.Cog):
             else:
                 pioneer_w = 3
             fs_time = dt.timedelta(hours=int(dist_hours), minutes=int(((dist / 10) - dist_hours) * 60))
-            fs_xe = (np.ceil(dist / 10) * 0.2) + 1
+            fs_xe = np.around((np.ceil(dist / 10) * 0.2) + 1, 1)
             sos_time = dt.timedelta(hours=int(dist_hours + 6), minutes=int(((dist / 10) - dist_hours) * 60))
-            sos_xe = (np.ceil(dist / 10) * 0.3) + 3
+            sos_xe = np.around((np.ceil(dist / 10) * 0.3) + 3, 1)
             sv_time = fs_time + dt.timedelta(hours=72)
-            sv_xe = (np.ceil(dist / 10) * 0.2) + 1  # will have to check if system is anomaly once connected to server
+            sv_xe = np.around((np.ceil(dist / 10) * 0.2) + 1, 1)  # will have to check if system is anomaly once connected to server
             if smd:
                 mo_time = fs_time + dt.timedelta(hours=192)
             else:
                 mo_time = fs_time + dt.timedelta(hours=168)
-            mo_xe = (np.ceil(dist / 10) * 0.3) + 1
+            mo_xe = np.around((np.ceil(dist / 10) * 0.3) + 1, 1)
             if aw:
                 mo_ore = 0
             else:
                 mo_ore = 5
             lb_time = fs_time + dt.timedelta(hours=168)
-            lb_xe = (np.ceil(dist / 10) * 1)
+            lb_xe = np.around((np.ceil(dist / 10) * 1), 1)
 
         if mission == 'All':
             await ctx.send("```A Probe from {} to {} will take {} and cost 3 Plasteel\n"
