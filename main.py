@@ -92,7 +92,7 @@ async def eval_error(error, ctx):
 async def on_ready():
     print("The bot is ready!")
     print(f'Logged in as: {bot.user.name} - {bot.user.id}')
-    print('---------------------------------------------')
+    print('------------------------------------------------------')
     await bot.change_presence(activity=discord.Game(name="Exogen"))
     # bot.remove_command('help')
     for cog in cogs:

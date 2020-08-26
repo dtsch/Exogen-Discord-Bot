@@ -41,7 +41,7 @@ class Calculation(commands.Cog):
         name='missions',
         description='Command to calculate mission times to a system in "<days>, hh:mm:ss" format, '
                     'along with associated costs',
-        aliases=['mission', 'm', 'mz', 'm1'],
+        aliases=['m', 'mz', 'm1'],
         usage='<rad-Z> <# of stars+planets> <Mission (All, Prob/PB, Pioneer/PN, Fuel Station/FS, '
               'Small Orbital Station/SOS, Science Vessel/SV, Mining Operation/MO, Lunar Base/LB)> '
               '<Subroutine Scanner upgrade (True/False)> <Augmented Workforce upgrade (True/False)> '
@@ -143,7 +143,7 @@ class Calculation(commands.Cog):
     )
     # function that command runs
     async def commission(self, ctx, coord, mission, explored=True, ad=True, ppl=False, qs=False, w_stars=0, o_stars=0,
-                       rare_stars=0, other_stars=1, rare_planets=0, planets=0, planet_type="Uninhabitable"):
+                         rare_stars=0, other_stars=1, rare_planets=0, planets=0, planet_type="Uninhabitable"):
         if coord == '':  # checking for blank arg
             await ctx.send(content="`***ERROR:*** You need to list the system's/planet's coordinates.`")
         elif not re.search(r"\d{5}-\d{5}", coord):  # checking for arg format
@@ -215,6 +215,105 @@ class Calculation(commands.Cog):
                                .format(coord, commission))
             else:
                 await ctx.send(content="```***ERROR*** You must enter a viable mission type or abbreviation.```")
+        return
+
+# command info
+    @commands.command(
+        name='mission',
+        description='Command to calculate mission times to a system in "<days>, hh:mm:ss" format, '
+                    'along with associated costs',
+        aliases=['mp', 'm2'],
+        usage='<rad-Z 1> <rad-Z 2> <# of stars+planets> <Mission (All, Prob/PB, Pioneer/PN, Fuel Station/FS, '
+              'Small Orbital Station/SOS, Science Vessel/SV, Mining Operation/MO, Lunar Base/LB)> '
+              '<Subroutine Scanner upgrade (True/False)> <Augmented Workforce upgrade (True/False)> '
+              'Subroutine Mining Drones upgrade (True/False)'
+    )
+    # function that command runs
+    async def mission2(self, ctx, coord1, coord2='00000-00000', bodies=1, mission="All", ss=False, aw=False, smd=False):
+        if coord1 == '' or coord2 == '':  # checking for blank arg
+            await ctx.send(content="`***ERROR:*** You need to list both systems' coordinates.`")
+        elif not re.search(r"\d{5}-\d{5}", coord1) or not re.search(r"\d{5}-\d{5}", coord2):  # checking for arg format
+            await ctx.send(content="`***ERROR:*** You must enter the coordinates in the #####-##### format`")
+        elif not isinstance(bodies, int):  # checking for arg format
+            await ctx.send(content="`***ERROR:*** You must enter the # of stars and planets as an integer`")
+        else:  # if passes checks, parses args for calculation
+            r1 = int(re.search(r"^\d{5}", coord1).group(0))
+            z1 = int(re.search(r"\d{5}$", coord1).group(0))
+            r2 = int(re.search(r"^\d{5}", coord2).group(0))
+            z2 = int(re.search(r"\d{5}$", coord2).group(0))
+            dist = np.around(np.sqrt((np.square(z1) + np.square(z2)) -
+                                     2 * (z1 * z2 * (np.cos((r1 - r2) / 10000)))) / 10, 1)
+            dist_hours = np.floor(dist/10)
+            probe_time = dt.timedelta(hours=int(dist_hours + np.floor(bodies / 2)),
+                                      minutes=int(((z / 10) - dist_hours) * 60 + (bodies % 2) * 30))
+            pioneer_time = dt.timedelta(hours=int(dist_hours + 6), minutes=int(((z / 10) - dist_hours) * 60))
+            pioneer_xe = np.ceil(z / 10) * 0.1
+            if ss:  # checks if player set upgrade value to T, may need to make this more robust
+                pioneer_w = 2
+            else:
+                pioneer_w = 3
+            fs_time = dt.timedelta(hours=int(dist_hours), minutes=int(((z / 10) - dist_hours) * 60))
+            fs_xe = (np.ceil(z / 10) * 0.2) + 1
+            sos_time = dt.timedelta(hours=int(dist_hours + 6), minutes=int(((z / 10) - dist_hours) * 60))
+            sos_xe = (np.ceil(z / 10) * 0.3) + 3
+            sv_time = fs_time + dt.timedelta(hours=72)
+            sv_xe = (np.ceil(z / 10) * 0.2) + 1  # will have to check if system is anomaly once connected to server
+            if smd:
+                mo_time = fs_time + dt.timedelta(hours=192)
+            else:
+                mo_time = fs_time + dt.timedelta(hours=168)
+            mo_xe = (np.ceil(z / 10) * 0.3) + 1
+            if aw:
+                mo_ore = 0
+            else:
+                mo_ore = 5
+            lb_time = fs_time + dt.timedelta(hours=168)
+            lb_xe = (np.ceil(z / 10) * 1)
+
+        if mission == 'All':
+            await ctx.send("```A Probe to {} will take {} and cost 3 Plasteel\n"
+                           "A Pioneer to {} will take {} and cost {} Xe, {} Water, 2 Plasteel.\n"
+                           "A Fuel Station to {} will take {} and cost {} Xe, 3 Water, 3 Ore, 3 Plasteel.\n"
+                           "A Small Orbital Station to {} will take {} and cost {} Xe, 3 Water, 3 Ore, 1 Plasteel, "
+                           "10 Licenses.\n"
+                           "A Science Vessel to {} will take {} and cost {} Xe, 3 Water, 1 Ore, 10 Plasteel, "
+                           "10 Licenses.\n"
+                           "A Mining Operation to {} will take {} and cost {} Xe, 5 Water, {} Ore, 5 Plasteel, "
+                           "5 Licenses.\n"
+                           "A Lunar Base to {} will take {} and cost {} Xe, 25 Water, 75 Ore, 25 Plasteel, "
+                           "25 Licenses.```"
+                           .format(coord, str(probe_time)
+                                   , coord, str(pioneer_time), pioneer_xe, pioneer_w
+                                   , coord, str(fs_time), fs_xe
+                                   , coord, str(sos_time), sos_xe
+                                   , coord, str(sv_time), sv_xe
+                                   , coord, str(mo_time), mo_xe, mo_ore
+                                   , coord, str(lb_time), lb_xe))
+        elif mission == 'Probe' or mission == 'PB':
+            await ctx.send("```A Probe to {} will take {} and cost 3 Plasteel```".format(coord, str(probe_time)))
+        elif mission == 'Pioneer' or mission == 'PN':
+            await ctx.send("```A Pioneer to {} will take {} and cost {} Xe, {} Water, 2 Plasteel.```"
+                           .format(coord, str(pioneer_time), pioneer_xe, pioneer_w))
+        elif mission == 'Fuel Station' or mission == 'FS':
+            await ctx.send("```A Fuel Station to {} will take {} and cost {} Xe, 3 Water, 3 Ore, 3 Plasteel.```"
+                           .format(coord, str(fs_time), fs_xe))
+        elif mission == 'Small Orbital Station' or mission == 'SOS':
+            await ctx.send("```A Small Orbital Station to {} will take {} and cost {} Xe, 3 Water, 3 Ore, 1 Plasteel, "
+                           "10 Licenses.```".format(coord, str(sos_time), sos_xe))
+        elif mission == 'Science Vessel' or mission == 'SV':
+            await ctx.send(
+                "```A Science Vessel to {} will take {} and cost {} Xe, 3 Water, 1 Ore, 10 Plasteel, 10 Licenses.```"
+                .format(coord, str(sv_time), sv_xe))
+        elif mission == 'Mining Operation' or mission == 'MO':
+            await ctx.send(
+                "```A Mining Operation to {} will take {} and cost {} Xe, 5 Water, {} Ore, 5 Plasteel, 5 Licenses.```"
+                .format(coord, str(mo_time), mo_xe, mo_ore))
+        elif mission == 'Lunar Base' or mission == 'LB':
+            await ctx.send(
+                "```A Lunar Base to {} will take {} and cost {} Xe, 25 Water, 75 Ore, 25 Plasteel, 25 Licenses.```"
+                .format(coord, str(lb_time), lb_xe))
+        else:
+            await ctx.send(content="```***ERROR*** You must enter a viable mission type, abbreviation, or 'All'.```")
         return
 
 
