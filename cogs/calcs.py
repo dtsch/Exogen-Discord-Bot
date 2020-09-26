@@ -37,6 +37,7 @@ class Calculation(commands.Cog):
         return
 
     # command info
+    # noinspection PyUnboundLocalVariable,PyShadowingNames
     @commands.command(
         name='missions',
         description='Command to calculate mission times to a system in "<days>, hh:mm:ss" format, '
@@ -148,7 +149,7 @@ class Calculation(commands.Cog):
             await ctx.send(content="`***ERROR:*** You need to list the system's/planet's coordinates.`")
         elif not re.search(r"\d{5}-\d{5}", coord):  # checking for arg format
             await ctx.send(content="`***ERROR:*** You must enter the coordinates in the #####-##### format.`")
-        elif not isinstance(w_stars, int) or not isinstance(o_stars, int) or not isinstance(rare_stars, int)\
+        elif not isinstance(w_stars, int) or not isinstance(o_stars, int) or not isinstance(rare_stars, int) \
                 or not isinstance(other_stars, int) or not isinstance(rare_planets, int) \
                 or not isinstance(planets, int):  # checking for arg format
             await ctx.send(content="`***ERROR:*** You must enter the # of stars and planets as an integer`")
@@ -169,33 +170,33 @@ class Calculation(commands.Cog):
                                .format(coord, commission))
             elif mission == "Pioneer" or mission == "PN":
                 p_types = {"Craters World": 1
-                           ,"Desert Craters World": 2
-                           ,"Desert Dunes World": 2
-                           ,"Desert Metal-rich World": 2
-                           ,"Desert Rocky World": 2
-                           ,"Desert Volcanic World": 2
-                           ,"Desert World": 1
-                           ,"Dunes Craters World": 2
-                           ,"Dunes Metal-rich World": 2
-                           ,"Dunes Rocky World": 2
-                           ,"Dunes Volcanic World": 2
-                           ,"Dunes World": 1
-                           ,"Metal-rich Craters World": 2
-                           ,"Metal-rich Volcanic World": 2
-                           ,"Metal-rich World": 1
-                           ,"Rocky Craters World": 2
-                           ,"Rocky Metal-rich World": 2
-                           ,"Rocky Volcanic World": 2
-                           ,"Rocky World": 1
-                           ,"Volcanic Craters World": 2
-                           ,"Volcanic World": 1
-                           ,"Rare Planetary Body": 10
-                           ,"Destroyed Planet": 0
-                           ,"Earth-like World": 0
-                           ,"Water World": 0
-                           ,"Moon": 0
-                           ,"Comet": 0
-                           ,"Uninhabitable": 0
+                           , "Desert Craters World": 2
+                           , "Desert Dunes World": 2
+                           , "Desert Metal-rich World": 2
+                           , "Desert Rocky World": 2
+                           , "Desert Volcanic World": 2
+                           , "Desert World": 1
+                           , "Dunes Craters World": 2
+                           , "Dunes Metal-rich World": 2
+                           , "Dunes Rocky World": 2
+                           , "Dunes Volcanic World": 2
+                           , "Dunes World": 1
+                           , "Metal-rich Craters World": 2
+                           , "Metal-rich Volcanic World": 2
+                           , "Metal-rich World": 1
+                           , "Rocky Craters World": 2
+                           , "Rocky Metal-rich World": 2
+                           , "Rocky Volcanic World": 2
+                           , "Rocky World": 1
+                           , "Volcanic Craters World": 2
+                           , "Volcanic World": 1
+                           , "Rare Planetary Body": 10
+                           , "Destroyed Planet": 0
+                           , "Earth-like World": 0
+                           , "Water World": 0
+                           , "Moon": 0
+                           , "Comet": 0
+                           , "Uninhabitable": 0
                            }
 
                 if ppl:
@@ -217,7 +218,8 @@ class Calculation(commands.Cog):
                 await ctx.send(content="```***ERROR*** You must enter a viable mission type or abbreviation.```")
         return
 
-# command info
+    # command info
+    # noinspection PyUnboundLocalVariable
     @commands.command(
         name='mission',
         description='Command to calculate mission times to a system in "<days>, hh:mm:ss" format, '
@@ -230,6 +232,8 @@ class Calculation(commands.Cog):
     )
     # function that command runs
     async def mission2(self, ctx, coord1, coord2='00000-00000', bodies=1, mission="All", ss=False, aw=False, smd=False):
+        # noinspection PyGlobalUndefined
+        global probe_time
         if coord1 == '' or coord2 == '':  # checking for blank arg
             await ctx.send(content="`***ERROR:*** You need to list both systems' coordinates.`")
         elif not re.search(r"\d{5}-\d{5}", coord1) or not re.search(r"\d{5}-\d{5}", coord2):  # checking for arg format
@@ -243,7 +247,7 @@ class Calculation(commands.Cog):
             z2 = int(re.search(r"\d{5}$", coord2).group(0))
             dist = np.around(np.sqrt((np.square(z1) + np.square(z2)) -
                                      2 * (z1 * z2 * (np.cos((r1 - r2) / 10000)))) / 10, 1)
-            dist_hours = np.floor(dist/10)
+            dist_hours = np.floor(dist / 10)
             probe_time = dt.timedelta(hours=int(dist_hours + np.floor(bodies / 2)),
                                       minutes=int(((dist / 10) - dist_hours) * 60 + (bodies % 2) * 30))
             pioneer_time = dt.timedelta(hours=int(dist_hours + 6), minutes=int(((dist / 10) - dist_hours) * 60))

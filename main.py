@@ -195,7 +195,7 @@ async def on_reaction_add(reaction, user):
         await ro.delete()
         await reaction.message.channel.send("Successfully deleted the " + ch.mention + " channel and " +
                                             ro.mention + " role.")
-        await reaction.message.clear_reactions()
+        await reaction.message.delete()
         return
     elif reaction.emoji == u"\u274E":
         await reaction.message.delete()
