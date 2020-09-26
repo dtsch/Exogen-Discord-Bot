@@ -26,6 +26,7 @@ bot = commands.Bot(
 # gathering the commands
 cogs = [
     'cogs.calcs'
+    , 'cogs.calcs2'
     # , 'cogs.mod'
 ]
 
