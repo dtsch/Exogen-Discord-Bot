@@ -257,7 +257,7 @@ class Calculation(commands.Cog):
             sos_time = dt.timedelta(hours=int(dist_hours + 6), minutes=int(((dist / 10) - dist_hours) * 60))
             sos_xe = np.around((np.ceil(dist / 10) * 0.3) + 3, 1)
             sv_time = fs_time + dt.timedelta(hours=72)
-            sv_xe = np.around((np.ceil(dist / 10) * 0.2) + 1, 1)  # will have to check if system is anomaly once connected to server
+            sv_xe = np.around((np.ceil(dist / 10) * 0.2) + 1, 1)  # check if system is anomaly once connected to server
             if smd:
                 mo_time = fs_time + dt.timedelta(hours=192)
             else:

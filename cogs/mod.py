@@ -10,7 +10,7 @@ class Moderation(commands.Cog):
         self.bot = bot
 
     @commands.command(pass_context=True)
-    async def mod_fcn(self, ctx): pass # add some function here
+    async def mod_fcn(self, ctx): pass  # add some function here
 
 
 def setup(bot):
