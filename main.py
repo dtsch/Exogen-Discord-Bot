@@ -97,8 +97,8 @@ async def eval_error(error, ctx):
 )
 @commands.has_permissions(manage_channels=True)
 async def new_channel(ctx, name, cat: discord.CategoryChannel = None):
-    await guild.create_text_channel(ctx.guild, name, category=cat)
-    await ctx.send("Congratulations! The new channel of " + name + " has been created")
+    channel = await guild.create_text_channel(ctx.guild, name, category=cat)
+    await ctx.send("Congratulations! The new channel of " + channel.mention + " has been created")
 
 
 @bot.command(
@@ -123,8 +123,8 @@ async def delete_channel(ctx, name: discord.TextChannel):
 )
 @commands.has_permissions(manage_roles=True)
 async def new_role(ctx, role_name):
-    await ctx.guild.create_role(name=role_name)
-    await ctx.send("Congratulations! The new role of " + role_name + " has been created")
+    role = await ctx.guild.create_role(name=role_name)
+    await ctx.send("Congratulations! The new role of " + role.mention + " has been created")
 
 
 @bot.command(
@@ -179,7 +179,7 @@ async def delete_mc(ctx, channel: discord.TextChannel, role: discord.Role):
     global ro
     ro = role
     msg = await ctx.message.channel.send("Are you sure you wish to delete the role and channel for this Mega Corp?\n"
-                                         "Please press :white_check_mark: or :negative_squared_cross_mark:.")
+                                         "Please press {} or {}.".format(u"\u2705", u"\u274E"))
     await msg.add_reaction(u"\u2705")
     await msg.add_reaction(u"\u274E")
 
