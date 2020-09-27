@@ -24,11 +24,11 @@ class Calculation2(commands.Cog):
     # function that command runs
     async def mission_e(self, ctx, coord, bodies=1, mission="All", ss=False, aw=False, smd=False):
         if coord == '':  # checking for blank arg
-            await ctx.send(content="`***ERROR:*** You need to list the system's coordinates`")
+            await ctx.send("`***ERROR:*** You need to list the system's coordinates`")
         elif not re.search(r"\d{5}-\d{5}", coord):  # checking for arg format
-            await ctx.send(content="`***ERROR:*** You must enter the coordinates in the #####-##### format`")
+            await ctx.send("`***ERROR:*** You must enter the coordinates in the #####-##### format`")
         elif not isinstance(bodies, int):  # checking for arg format
-            await ctx.send(content="`***ERROR:*** You must enter the # of stars and planets as an integer`")
+            await ctx.send("`***ERROR:*** You must enter the # of stars and planets as an integer`")
         else:  # if passes checks, parses args for calculation
             # r = int(re.search(r"^\d{5}", coord).group(0))
             z = int(re.search(r"\d{5}$", coord).group(0))
@@ -100,7 +100,7 @@ class Calculation2(commands.Cog):
             await ctx.send("A Lunar Base :LunarBase: to {} will take {} and cost {} :Xe:, 25 :Water:, 75 :Ore:, "
                            "25 :Plasteel:, 25 :License:.".format(coord, str(lb_time), lb_xe))
         else:
-            await ctx.send(content="`***ERROR*** You must enter a viable mission type, abbreviation, or 'All'.`")
+            await ctx.send("`***ERROR*** You must enter a viable mission type, abbreviation, or 'All'.`")
         return
 
     # command info
@@ -117,13 +117,13 @@ class Calculation2(commands.Cog):
     async def commission_e(self, ctx, coord, mission, explored=True, ad=True, ppl=False, qs=False, w_stars=0, o_stars=0,
                            rare_stars=0, other_stars=1, rare_planets=0, planets=0, planet_type="Uninhabitable"):
         if coord == '':  # checking for blank arg
-            await ctx.send(content="`***ERROR:*** You need to list the system's/planet's coordinates.`")
+            await ctx.send("`***ERROR:*** You need to list the system's/planet's coordinates.`")
         elif not re.search(r"\d{5}-\d{5}", coord):  # checking for arg format
-            await ctx.send(content="`***ERROR:*** You must enter the coordinates in the #####-##### format.`")
+            await ctx.send("`***ERROR:*** You must enter the coordinates in the #####-##### format.`")
         elif not isinstance(w_stars, int) or not isinstance(o_stars, int) or not isinstance(rare_stars, int) \
                 or not isinstance(other_stars, int) or not isinstance(rare_planets, int) \
                 or not isinstance(planets, int):  # checking for arg format
-            await ctx.send(content="`***ERROR:*** You must enter the # of stars and planets as an integer`")
+            await ctx.send("`***ERROR:*** You must enter the # of stars and planets as an integer`")
         else:  # if passes checks, parses args for calculation
             if explored:
                 first = 1
@@ -186,7 +186,7 @@ class Calculation2(commands.Cog):
                 await ctx.send("Sending a Science Vessel :ScienceVessel: to {} will return a commission of "
                                "{} :License:.".format(coord, commission))
             else:
-                await ctx.send(content="`***ERROR*** You must enter a viable mission type or abbreviation.`")
+                await ctx.send("`***ERROR*** You must enter a viable mission type or abbreviation.`")
         return
 
     # command info
@@ -206,11 +206,11 @@ class Calculation2(commands.Cog):
         # noinspection PyGlobalUndefined
         global probe_time
         if coord1 == '' or coord2 == '':  # checking for blank arg
-            await ctx.send(content="`***ERROR:*** You need to list both systems' coordinates.`")
+            await ctx.send("`***ERROR:*** You need to list both systems' coordinates.`")
         elif not re.search(r"\d{5}-\d{5}", coord1) or not re.search(r"\d{5}-\d{5}", coord2):  # checking for arg format
-            await ctx.send(content="`***ERROR:*** You must enter the coordinates in the #####-##### format`")
+            await ctx.send("`***ERROR:*** You must enter the coordinates in the #####-##### format`")
         elif not isinstance(bodies, int):  # checking for arg format
-            await ctx.send(content="`***ERROR:*** You must enter the # of stars and planets as an integer`")
+            await ctx.send("`***ERROR:*** You must enter the # of stars and planets as an integer`")
         else:  # if passes checks, parses args for calculation
             r1 = int(re.search(r"^\d{5}", coord1).group(0))
             z1 = int(re.search(r"\d{5}$", coord1).group(0))
@@ -292,7 +292,7 @@ class Calculation2(commands.Cog):
                 "A Lunar Base :LunarBase: from {} to {} will take {} and cost {} :Xe:, 25 :Water:, 75 :Ore:, "
                 "25 :Plasteel:, 25 :License:.".format(coord1, coord2, str(lb_time), lb_xe))
         else:
-            await ctx.send(content="`***ERROR*** You must enter a viable mission type, abbreviation, or 'All'.`")
+            await ctx.send("`***ERROR*** You must enter a viable mission type, abbreviation, or 'All'.`")
         return
 
 

@@ -66,7 +66,7 @@ class Moderation(commands.Cog):
     )
     @commands.has_permissions(manage_channels=True)
     async def new_channel(self, ctx, name, cat: discord.CategoryChannel = None):
-        channel = await guild.create_text_channel(ctx.guild, name, category=cat)
+        channel = await discord.Guild.create_text_channel(ctx.guild, name, category=cat)
         await ctx.send("Congratulations! The new channel of " + channel.mention + " has been created")
 
     @new_channel.error
