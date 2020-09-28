@@ -16,6 +16,7 @@ class Calculation(commands.Cog):
         aliases=['d', 'dz', 'd1'],
         usage='<rad-Z 1> <rad-Z 2>'
     )
+    @commands.dm_only()
     # function that command runs
     async def distance(self, ctx, coord1, coord2):
         if coord1 == '':  # checking for blank arg
@@ -48,6 +49,7 @@ class Calculation(commands.Cog):
               '<Subroutine Scanner upgrade (True/False)> <Augmented Workforce upgrade (True/False)> '
               'Subroutine Mining Drones upgrade (True/False)'
     )
+    @commands.dm_only()
     # function that command runs
     async def mission(self, ctx, coord, bodies=1, mission="All", ss=False, aw=False, smd=False):
         if coord == '':  # checking for blank arg
@@ -142,6 +144,7 @@ class Calculation(commands.Cog):
               '<Astro-cartography Database upgrade (True/False)> <Printable Pocket Labs upgrade (True/False)> '
               '<Quantum Spectrometer upgrade (True/False)>'
     )
+    @commands.dm_only()
     # function that command runs
     async def commission(self, ctx, coord, mission, explored=True, ad=True, ppl=False, qs=False, w_stars=0, o_stars=0,
                          rare_stars=0, other_stars=1, rare_planets=0, planets=0, planet_type="Uninhabitable"):
@@ -230,6 +233,7 @@ class Calculation(commands.Cog):
               '<Subroutine Scanner upgrade (True/False)> <Augmented Workforce upgrade (True/False)> '
               'Subroutine Mining Drones upgrade (True/False)'
     )
+    @commands.dm_only()
     # function that command runs
     async def mission2(self, ctx, coord1, coord2='00000-00000', bodies=1, mission="All", ss=False, aw=False, smd=False):
         # noinspection PyGlobalUndefined
@@ -321,17 +325,6 @@ class Calculation(commands.Cog):
         else:
             await ctx.author.send("```***ERROR*** You must enter a viable mission type, abbreviation, or 'All'.```")
         return
-
-    # command that DMs the sender
-    @commands.command(
-        pass_context=True,
-        name='direct_message',
-        description='Initiates a DM with the user.',
-        aliases=['dm'],
-        usage='<!dm>'
-    )
-    async def dm(self, ctx):
-        await ctx.author.send("Hey, what do you need?")
 
 
 def setup(bot):

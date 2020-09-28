@@ -21,6 +21,7 @@ class Calculation2(commands.Cog):
               '<Subroutine Scanner upgrade (True/False)> <Augmented Workforce upgrade (True/False)> '
               'Subroutine Mining Drones upgrade (True/False)'
     )
+    @commands.dm_only()
     # function that command runs
     async def mission_e(self, ctx, coord, bodies=1, mission="All", ss=False, aw=False, smd=False):
         if coord == '':  # checking for blank arg
@@ -113,6 +114,7 @@ class Calculation2(commands.Cog):
               '<Astro-cartography Database upgrade (True/False)> <Printable Pocket Labs upgrade (True/False)> '
               '<Quantum Spectrometer upgrade (True/False)>'
     )
+    @commands.dm_only()
     # function that command runs
     async def commission_e(self, ctx, coord, mission, explored=True, ad=True, ppl=False, qs=False, w_stars=0, o_stars=0,
                            rare_stars=0, other_stars=1, rare_planets=0, planets=0, planet_type="Uninhabitable"):
@@ -201,6 +203,7 @@ class Calculation2(commands.Cog):
               '<Subroutine Scanner upgrade (True/False)> <Augmented Workforce upgrade (True/False)> '
               'Subroutine Mining Drones upgrade (True/False)'
     )
+    @commands.dm_only()
     # function that command runs
     async def mission2_e(self, ctx, coord1, coord2='00000-00000', bodies=1, mission="All", ss=False, aw=False, smd=False):
         # noinspection PyGlobalUndefined
