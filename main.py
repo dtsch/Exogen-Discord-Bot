@@ -1,4 +1,5 @@
 import asyncio
+import requests
 import json
 import re
 import discord
@@ -15,25 +16,37 @@ def get_prefix(bot_client, message):
     return commands.when_mentioned_or(*prefixes)(bot_client, message)
 
 
+# intents so bot can see members from DMs
+intents = discord.Intents(messages=True, members=True, guilds=True, presences=True)
+
+
 # bot info
 bot = commands.Bot(
-    command_prefix=get_prefix,
-    description='Bot to help Exogen players make calculations, and for mods/admins to manage the server.',
-    case_insensitive=True
+    command_prefix=get_prefix
+    , description='Bot to help Exogen players make calculations, and for mods/admins to manage the server.'
+    , case_insensitive=True
+    , intents=intents
 )
 
 # gathering the commands
 cogs = [
     'cogs.calcs'
-    , 'cogs.calcs2'
+    # , 'cogs.calcs2'
     , 'cogs.mod'
     , 'cogs.advisors'
 ]
 
-database = ['D8GM3S', 'token6']
-target_server_id = 704139386501201942
-target_channel_id = 725386567740555416
-target_role_id = 760186396555739197
+url = 'https://exogen.space/botapi/'
+api_key = secrets['SECRET_KEY']
+database = ['D8GM3S', 'token6', 'A1B2C3']
+# id's for testing server
+# target_server_id = 704139386501201942
+# target_channel_id = 725386567740555416
+# target_role_id = 760186396555739197
+# Exogen id's
+target_server_id = 637447316856373268
+target_channel_id = 741106877722656789
+target_role_id = 741279442416173096
 
 
 # limiting the eval command to just the bot owner
@@ -96,21 +109,36 @@ async def advisor_token(ctx, token: str = None):
             await ctx.author.send("Checking database.")
         async with ctx.typing():
             await asyncio.sleep(2)
-            await ctx.author.send("Your token has been found.\nActivating donor rewards.")
+            await ctx.author.send("Your token has been found.")
+        async with ctx.typing():
+            await asyncio.sleep(1)
+            await ctx.author.send("Activating donor rewards.")
 
         # do stuff to check for token and add Advisor role in Exogen Discord server
         guild = bot.get_guild(target_server_id)
         channel = bot.get_channel(target_channel_id)
         role = guild.get_role(target_role_id)
-        role_name = '@' + role.name
         member = guild.get_member(ctx.message.author.id)
         if member:
             await member.add_roles(role)
 
-        async with ctx.typing():
-            await asyncio.sleep(2)
-            await ctx.author.send("Congratulations {} and welcome to the {}'s channel {}!"
-                                  .format(member.mention, role_name, channel.mention))
+            async with ctx.typing():
+                await asyncio.sleep(2)
+                await ctx.author.send("Congratulations {} and welcome to the {}'s channel {}!"
+                                      .format(member.mention, role.name, channel.mention))
+        else:
+            async with ctx.typing():
+                await asyncio.sleep(1)
+                await ctx.author.send("You are not a member on this server.")
+
+
+@bot.event
+async def on_member_join(member):
+    rules = bot.get_channel(704733802223894648)
+    nav = bot.get_channel(771885969715626005)
+    await member.send("Welcome, {}!".format(member.name))
+    await member.send("Please check out the {} before heading over to {} to see where things are located."
+                      .format(rules.mention, nav.mention))
 
 
 # bot start up event

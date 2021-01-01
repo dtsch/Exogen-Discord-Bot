@@ -1,14 +1,23 @@
 import discord
 from discord.ext import commands
 import asyncio
+import aiohttp
+import requests
+import json
 import re
+
+# grabbing the config file
+with open('config.json') as config_file:
+    secrets = json.load(config_file)
 
 client = discord.Client()
 
-database = ['D8GM3S', 'token6']
-target_server_id = 704139386501201942
-target_channel_id = 725386567740555416
-target_role_id = 759941703066583072
+url = 'https://exogen.space/botapi/'
+api_key = secrets['SECRET_KEY']
+database = ['D8GM3S', 'token6', 'A1B2C3']
+target_server_id = 637447316856373268
+target_channel_id = 741106877722656789
+target_role_id = 741279442416173096
 
 
 class Advisors(commands.Cog):

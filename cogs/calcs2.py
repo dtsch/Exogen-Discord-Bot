@@ -60,48 +60,37 @@ class Calculation2(commands.Cog):
             lb_time = fs_time + dt.timedelta(hours=168)
             lb_xe = (np.ceil(z / 10) * 1)
 
+        probe = f'A Probe to {coord} will take {str(probe_time)} and cost 3 Plasteel\n'
+        pioneer = f'A Pioneer to {coord} will take {str(pioneer_time)} and cost {pioneer_xe} Xe, {pioneer_w} Water, ' \
+                  f'2 Plasteel.\n'
+        fs = f'A Fuel Station to {coord} will take {str(fs_time)} and cost {fs_xe} Xe, 3 Water, 3 Ore, 3 Plasteel.\n'
+        sos = f'A Small Orbital Station to {coord} will take {str(sos_time)} and cost {sos_xe} Xe, 3 Water, 3 Ore, ' \
+              f'1 Plasteel, 10 Licenses.\n'
+        sv = f'A Science Vessel to {coord} will take {str(sv_time)} and cost {sv_xe} Xe, 3 Water, 1 Ore, ' \
+             f'10 Plasteel, 10 Licenses.\n'
+        mo = f'A Mining Operation to {coord} will take {str(mo_time)} and cost {mo_xe} Xe, 5 Water, {mo_ore} Ore, ' \
+             f'5 Plasteel, 5 Licenses.\n'
+        lb = f'A Lunar Base to {coord} will take {str(lb_time)} and cost {lb_xe} Xe, 25 Water, 75 Ore, 25 Plasteel, ' \
+             f'25 Licenses.\n'
+
         if mission == 'All':
-            await ctx.send("A Probe :Probe: to {} will take {} and cost 3 :Plasteel:\n"
-                           "A Pioneer :Pioneer: to {} will take {} and cost {} :Xe:, {} :Water:, 2 :Plasteel:.\n"
-                           "A Fuel Station :FuelStation: to {} will take {} and cost {} :Xe:, 3 :Water:, 3 :Ore:, "
-                           "3 :Plasteel:.\n"
-                           "A Small Orbital Station :SmallOrbitalStation: to {} will take {} and cost {} :Xe:, "
-                           "3 :Water:, 3 :Ore:, 1 :Plasteel:, 10 :License:.\n"
-                           "A Science Vessel :ScienceVessel: to {} will take {} and cost {} :Xe:, 3 :Water:, 1 :Ore:, "
-                           "10 :Plasteel:, 10 :License:.\n"
-                           "A Mining Operation :MiningOperation: to {} will take {} and cost {} :Xe:, 5 :Water:, "
-                           "{} :Ore:, 5 :Plasteel:, 5 :License:.\n"
-                           "A Lunar Base :LunarBase: to {} will take {} and cost {} :Xe:, 25 :Water:, 75 :Ore:, "
-                           "25 :Plasteel:, 25 :License:."
-                           .format(coord, str(probe_time)
-                                   , coord, str(pioneer_time), pioneer_xe, pioneer_w
-                                   , coord, str(fs_time), fs_xe
-                                   , coord, str(sos_time), sos_xe
-                                   , coord, str(sv_time), sv_xe
-                                   , coord, str(mo_time), mo_xe, mo_ore
-                                   , coord, str(lb_time), lb_xe))
+            await ctx.author.send(probe, pioneer, fs, sos, sv, mo, lb)
         elif mission == 'Probe' or mission == 'PB':
-            await ctx.send("A Probe :Probe: to {} will take {} and cost 3 :Plasteel:".format(coord, str(probe_time)))
+            await ctx.author.send(probe)
         elif mission == 'Pioneer' or mission == 'PN':
-            await ctx.send("A Pioneer :Pioneer: to {} will take {} and cost {} :Xe:, {} :Water:, 2 :Plasteel:."
-                           .format(coord, str(pioneer_time), pioneer_xe, pioneer_w))
+            await ctx.author.send(pioneer)
         elif mission == 'Fuel Station' or mission == 'FS':
-            await ctx.send("A Fuel Station :FuelStation: to {} will take {} and cost {} :Xe:, 3 :Water:, 3 :Ore:, "
-                           "3 :Plasteel:.".format(coord, str(fs_time), fs_xe))
+            await ctx.author.send(fs)
         elif mission == 'Small Orbital Station' or mission == 'SOS':
-            await ctx.send("A Small Orbital Station :SmallOrbitalStation: to {} will take {} and cost {} :Xe:, "
-                           "3 :Water:, 3 :Ore:, 1 :Plasteel:, 10 :License:.".format(coord, str(sos_time), sos_xe))
+            await ctx.author.send(sos)
         elif mission == 'Science Vessel' or mission == 'SV':
-            await ctx.send("A Science Vessel :ScienceVessel: to {} will take {} and cost {} :Xe:, 3 :Water:, "
-                           "1 :Ore:, 10 :Plasteel:, 10 :License:.".format(coord, str(sv_time), sv_xe))
+            await ctx.author.send(sv)
         elif mission == 'Mining Operation' or mission == 'MO':
-            await ctx.send("A Mining Operation :MiningOperation: to {} will take {} and cost {} :Xe:, 5 :Water:, "
-                           "{} :Ore:, 5 :Plasteel:, 5 :License:.".format(coord, str(mo_time), mo_xe, mo_ore))
+            await ctx.author.send(mo)
         elif mission == 'Lunar Base' or mission == 'LB':
-            await ctx.send("A Lunar Base :LunarBase: to {} will take {} and cost {} :Xe:, 25 :Water:, 75 :Ore:, "
-                           "25 :Plasteel:, 25 :License:.".format(coord, str(lb_time), lb_xe))
+            await ctx.author.send(lb)
         else:
-            await ctx.send("`***ERROR*** You must enter a viable mission type, abbreviation, or 'All'.`")
+            await ctx.author.send("```***ERROR*** You must enter a viable mission type, abbreviation, or 'All'.```")
         return
 
     # command info
@@ -176,7 +165,7 @@ class Calculation2(commands.Cog):
                     upgrade = 2
                 else:
                     upgrade = 1
-                commission = p_types[planet_type] * first * ppl
+                commission = p_types[planet_type] * first * ppl * upgrade
                 await ctx.send("Sending Pioneers :Pioneer: to {} will return a commission of {} :License:."
                                .format(coord, commission))
 
@@ -205,9 +194,14 @@ class Calculation2(commands.Cog):
     )
     @commands.dm_only()
     # function that command runs
-    async def mission2_e(self, ctx, coord1, coord2='00000-00000', bodies=1, mission="All", ss=False, aw=False, smd=False):
+    async def mission2_e(self, ctx, coord1, coord2='Sol', bodies=1, mission="All", ss=False, aw=False, smd=False):
         # noinspection PyGlobalUndefined
         global probe_time
+        if coord1 == 'Sol' or coord1 == 'sol':
+            coord1 == '00000-00000'
+        elif coord2 == 'Sol' or coord2 == 'sol':
+            coord2 == '00000-00000'
+
         if coord1 == '' or coord2 == '':  # checking for blank arg
             await ctx.send("`***ERROR:*** You need to list both systems' coordinates.`")
         elif not re.search(r"\d{5}-\d{5}", coord1) or not re.search(r"\d{5}-\d{5}", coord2):  # checking for arg format
