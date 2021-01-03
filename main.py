@@ -10,19 +10,13 @@ with open('config.json') as config_file:
     secrets = json.load(config_file)
 
 
-# function to fetch the bot prefix
-def get_prefix(bot_client, message):
-    prefixes = [secrets['prefix']]
-    return commands.when_mentioned_or(*prefixes)(bot_client, message)
-
-
 # intents so bot can see members from DMs
-intents = discord.Intents(messages=True, members=True, guilds=True, presences=True)
+intents = discord.Intents(messages=True, reactions=True, members=True, guilds=True, presences=True)
 
 
 # bot info
 bot = commands.Bot(
-    command_prefix=get_prefix
+    command_prefix='!'
     , description='Bot to help Exogen players make calculations, and for mods/admins to manage the server.'
     , case_insensitive=True
     , intents=intents
@@ -31,22 +25,9 @@ bot = commands.Bot(
 # gathering the commands
 cogs = [
     'cogs.calcs'
-    # , 'cogs.calcs2'
     , 'cogs.mod'
     , 'cogs.advisors'
 ]
-
-url = 'https://exogen.space/botapi/'
-api_key = secrets['SECRET_KEY']
-database = ['D8GM3S', 'token6', 'A1B2C3']
-# id's for testing server
-# target_server_id = 704139386501201942
-# target_channel_id = 725386567740555416
-# target_role_id = 760186396555739197
-# Exogen id's
-target_server_id = 637447316856373268
-target_channel_id = 741106877722656789
-target_role_id = 741279442416173096
 
 
 # limiting the eval command to just the bot owner
@@ -68,68 +49,12 @@ async def eval_error(error, ctx):
     pass_context=True,
     name='direct_message',
     description='Initiates a DM with the user.',
-    aliases=['dm', 'priv'],
+    help='starts a DM with the user',
+    aliases=['dm'],
     usage=''
 )
 async def dm(ctx):
     await ctx.author.send("Hey, what do you need?")
-
-
-# command to add a user to a role
-@bot.command(
-    pass_context=True,
-    name='token',
-    description='Bot replies to sender in DM to verify registration as a donor in order to grant Advisor status.\n'
-                'Can only be used in DMs.',
-    usage='<token>',
-    aliases=['advisor'],
-    hidden=True
-)
-async def advisor_token(ctx, token: str = None):
-    if ctx.message.guild is not None:
-        async with ctx.typing():
-            await asyncio.sleep(1)
-            await ctx.send("This command can only be used in a DM channel.\n Try `!dm` to start a DM with me.")
-    elif token is None:  # returning info about verifying donor status
-        await asyncio.sleep(1)
-        await ctx.author.send("**ERROR:** Please enter a token.")
-    elif not re.search(r"[a-zA-Z0-9]{6}", token):  # checking for token for format
-        async with ctx.typing():
-            await asyncio.sleep(1)
-            await ctx.author.send("**ERROR:** You need to enter a token in the correct format.")
-    elif token not in database:  # checking if token not in database
-        async with ctx.typing():
-            await asyncio.sleep(1)
-            await ctx.author.send("**ERROR:** I'm sorry, but I cannot find this token in our database. "
-                                  "Please try again in a few minutes (donation can be still processed) "
-                                  "or contact us directly.")
-    elif token in database:  # checking if token exists in database
-        async with ctx.typing():
-            await asyncio.sleep(1)
-            await ctx.author.send("Checking database.")
-        async with ctx.typing():
-            await asyncio.sleep(2)
-            await ctx.author.send("Your token has been found.")
-        async with ctx.typing():
-            await asyncio.sleep(1)
-            await ctx.author.send("Activating donor rewards.")
-
-        # do stuff to check for token and add Advisor role in Exogen Discord server
-        guild = bot.get_guild(target_server_id)
-        channel = bot.get_channel(target_channel_id)
-        role = guild.get_role(target_role_id)
-        member = guild.get_member(ctx.message.author.id)
-        if member:
-            await member.add_roles(role)
-
-            async with ctx.typing():
-                await asyncio.sleep(2)
-                await ctx.author.send("Congratulations {} and welcome to the {}'s channel {}!"
-                                      .format(member.mention, role.name, channel.mention))
-        else:
-            async with ctx.typing():
-                await asyncio.sleep(1)
-                await ctx.author.send("You are not a member on this server.")
 
 
 @bot.event
@@ -139,6 +64,53 @@ async def on_member_join(member):
     await member.send("Welcome, {}!".format(member.name))
     await member.send("Please check out the {} before heading over to {} to see where things are located."
                       .format(rules.mention, nav.mention))
+    await member.send("If you are unfamiliar with Exogen, feel free to check out the manual:\n"
+                      "https://discordapp.com/channels/637447316856373268/704724317279092756/705170179893624943\n"
+                      "And for advice on getting your corporation up and running, check out this startup guide from "
+                      "the Pale Blue Dot megacorp:\n"
+                      "https://discord.com/channels/637447316856373268/704733458227789937/745698128627236965")
+
+
+@bot.event
+async def on_raw_reaction_add(payload):
+    guild = bot.get_guild(payload.guild_id)
+    member = discord.utils.get(guild.members, id=payload.user_id)
+    # rules reaction role
+    if payload.channel_id == 704733802223894648 and payload.message_id == 706999325556867163:
+        role = discord.utils.get(payload.member.guild.roles, name="Accepted Rules")
+        if str(payload.emoji) == '<:Exogen:749051544745541744>' or str(payload.emoji) == '👍':
+            await payload.member.add_roles(role)
+    # RP reaction role
+    elif payload.channel_id == 774834872719507496 and payload.message_id == 774845668745019392:
+        role = discord.utils.get(payload.member.guild.roles, name="RP opt in")
+        if str(payload.emoji) == '<:BHC:749478461562683443>':
+            await payload.member.add_roles(role)
+    # wiki reaction role
+    elif payload.channel_id == 794598980973363210 and payload.message_id == 794600306532548618:
+        role = discord.utils.get(payload.member.guild.roles, name="Researcher")
+        if str(payload.emoji) == '<:ArchangelFoundation:749053627947286548>':
+            await payload.member.add_roles(role)
+
+
+@bot.event
+async def on_raw_reaction_remove(payload):
+    guild = bot.get_guild(payload.guild_id)
+    member = discord.utils.get(guild.members, id=payload.user_id)
+    # rules reaction role
+    if payload.channel_id == 704733802223894648 and payload.message_id == 706999325556867163:
+        role = discord.utils.get(guild.roles, name="Accepted Rules")
+        if str(payload.emoji) == '<:Exogen:749051544745541744>':  # or str(payload.emoji) == '👍':
+            await member.remove_roles(role)
+    # RP reaction role
+    elif payload.channel_id == 774834872719507496 and payload.message_id == 774845668745019392:
+        role = discord.utils.get(guild.roles, name="RP opt in")
+        if str(payload.emoji) == '<:BHC:749478461562683443>':
+            await member.remove_roles(role)
+    # wiki reaction role
+    elif payload.channel_id == 794598980973363210 and payload.message_id == 794600306532548618:
+        role = discord.utils.get(guild.roles, name="Researcher")
+        if str(payload.emoji) == '<:ArchangelFoundation:749053627947286548>':
+            await member.remove_roles(role)
 
 
 # bot start up event
@@ -149,9 +121,10 @@ async def on_ready():
     print(f'Discord version is: {discord.__version__}')
     print('------------------------------------------------------')
     await bot.change_presence(activity=discord.Game(name="Exogen"))
-    # bot.remove_command('help')
     for cog in cogs:
         bot.load_extension(cog)
+        print(f'{cog} is ready.')
+    print('------------------------------------------------------')
     return
 
 

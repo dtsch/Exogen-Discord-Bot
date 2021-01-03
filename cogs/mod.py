@@ -12,16 +12,21 @@ class Moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.command(name='ping', help='Sends the latency of the Bot', hidden=False)
+    @commands.has_any_role('Assistant', 'Supervisor', 'Manager')
+    async def ping(self, ctx):
+        await ctx.send(f'**Pong!** Latency: {round(self.bot.latency * 1000)}ms')
+
     # command to add a user to a role
     @commands.command(
         pass_context=True,
         name="assign",
         description="Bot assigns designated role to target member, or self if blank, where possible.\n"
                     "This function is only available to moderators and up.",
+        help='assigns server role',
         usage="<role> <member>"
     )
     @commands.has_permissions(manage_roles=True)
-    # @commands.has_any_role(704696719375335455, 706983264933642263, 637450026989387786)
     # add Assistant, Supervisor, and Manager roles here
     async def assign(self, ctx, role: discord.Role, member: discord.Member = None):
         member = member or ctx.message.author
@@ -40,6 +45,7 @@ class Moderation(commands.Cog):
         name="remove",
         description="Bot removes designated role to target member, or self if blank, where possible.\n"
                     "This function is only available to moderators and up.",
+        help='removes server role',
         usage="<role> <member>"
     )
     @commands.has_permissions(manage_roles=True)
@@ -59,6 +65,7 @@ class Moderation(commands.Cog):
         pass_context=True,
         name="new_channel",
         description="Bot creates a new channel",
+        help='adds new channel',
         aliases=['nc'],
         usage="<channel name>"
     )
@@ -78,6 +85,7 @@ class Moderation(commands.Cog):
         pass_context=True,
         name="del_channel",
         description="Bot deletes a channel",
+        help='deletes channel',
         aliases=['dc'],
         usage="<channel name>"
     )
@@ -97,6 +105,7 @@ class Moderation(commands.Cog):
         pass_context=True,
         name="new_role",
         description="Bot creates a new role",
+        help='creates new role',
         aliases=['nr'],
         usage="<role name>"
     )
@@ -116,6 +125,7 @@ class Moderation(commands.Cog):
         pass_context=True,
         name="del_role",
         description="Bot deletes a role",
+        help='deletes role',
         aliases=['dr'],
         usage="<channel name>"
     )
@@ -136,6 +146,7 @@ class Moderation(commands.Cog):
         name="create_mc",
         description="Bot creates a private channel and exclusive role for a new Mega Corp.\n"
                     "This function is only available to moderators and up.",
+        help='creates new role and channel for a MC',
         aliases=['mc'],
         usage="<MC name> <MC handle>"
     )
@@ -163,6 +174,7 @@ class Moderation(commands.Cog):
         name="delete_mc",
         description="Bot deletes a private channel and exclusive role for a new Mega Corp.\n"
                     "This function is only available to moderators and up.",
+        help='deletes channel and role of MC',
         aliases=['dmc'],
         usage="<MC name> <MC handle>"
     )

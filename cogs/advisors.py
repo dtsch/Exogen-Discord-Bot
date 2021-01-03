@@ -14,7 +14,7 @@ client = discord.Client()
 
 url = 'https://exogen.space/botapi/'
 api_key = secrets['SECRET_KEY']
-database = ['D8GM3S', 'token6', 'A1B2C3']
+database = ['D8GM3S', 'token6']
 target_server_id = 637447316856373268
 target_channel_id = 741106877722656789
 target_role_id = 741279442416173096
@@ -25,80 +25,62 @@ class Advisors(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    # command to add a user to a role
+    # command to add user to a role
     @commands.command(
         pass_context=True,
         name="donor",
-        description="Bot replies to sender in DM to initiate verification as a donor in order to grant Advisor status.",
-        usage=""
+        description="Bot replies to sender in DM to verify registration as a donor in order to grant Advisor status.",
+        help='initiates donor rewards process',
+        usage="<token>"
     )
-    async def donor(self, ctx):
-        await asyncio.sleep(1)
-        await ctx.author.send("Please go to the Exogen site and in the My Corporation panel on the left side "
-                              "and in the Manage My Corporation you will find your personal Donor token.\n"
-                              "For example: `D8GM3S`\n"
-                              "Enter it here with the command `!token` and you will receive access to the secret "
-                              "Advisors channels.\n"
-                              "For example: `!token D8GM3S`")
+    async def donor(self, ctx, token='info'):
+        if token == 'info':  # returning info about verifying donor status
+            await asyncio.sleep(1)
+            await ctx.author.send("Please go to the Exogen site and in the My Corporation panel on the left side "
+                                  "and in the Manage My Corporation you will find your personal Donor token.\n"
+                                  "For example: `A1B2C3`\n"
+                                  "Enter it here and you will receive access to the secret channel!\n"
+                                  "For example: `!donor A1B2C3`")
+        elif not re.search(r"[a-zA-Z0-9]{6}", token):  # checking for token for format
+            async with ctx.typing():
+                await asyncio.sleep(1)
+                await ctx.author.send("**ERROR:** You need to enter a token in the correct format.")
+        elif token not in database:  # checking if token not in database
+            async with ctx.typing():
+                await asyncio.sleep(1)
+                await ctx.author.send("**ERROR:** I'm sorry, but I cannot find this token in our database. "
+                                      "Please try again in a few minutes (donation can be still processed) "
+                                      "or contact us directly.")
+        elif token in database:  # checking if token exists in database
+            async with ctx.typing():
+                await asyncio.sleep(1)
+                await ctx.author.send("Checking database.")
+            async with ctx.typing():
+                await asyncio.sleep(2)
+                await ctx.author.send("Your token has been found.\nActivating donor rewards.")
 
-    # command to add user to a role
-    # @commands.command(
-    #     pass_context=True,
-    #     name="donor",
-    #     description="Bot replies to sender in DM to verify registration as a donor in order to grant Advisor status.",
-    #     usage="<token>"
-    # )
-    # async def donor(self, ctx, token='info'):
-    #     if token == 'info':  # returning info about verifying donor status
-    #         await asyncio.sleep(1)
-    #         await ctx.author.send("Please go to the Exogen site and in the My Corporation panel on the left side "
-    #                               "and in the Manage My Corporation you will find your personal Donor token.\n"
-    #                               "For example: `D8GM3S`\n"
-    #                               "Enter it here and you will receive access to the secret channel!\n"
-    #                               "For example: `!donor D8GM3S`")
-    #     elif not re.search(r"[a-zA-Z0-9]{6}", token):  # checking for token for format
-    #         async with ctx.typing():
-    #             await asyncio.sleep(1)
-    #             await ctx.author.send("**ERROR:** You need to enter a token in the correct format.")
-    #     elif token not in database:  # checking if token not in database
-    #         async with ctx.typing():
-    #             await asyncio.sleep(1)
-    #             await ctx.author.send("**ERROR:** I'm sorry, but I cannot find this token in our database. "
-    #                                   "Please try again in a few minutes (donation can be still processed) "
-    #                                   "or contact us directly.")
-    #     elif token in database:  # checking if token exists in database
-    #         async with ctx.typing():
-    #             await asyncio.sleep(1)
-    #             await ctx.author.send("Checking database.")
-    #         async with ctx.typing():
-    #             await asyncio.sleep(2)
-    #             await ctx.author.send("Your token has been found.\nActivating donor rewards.")
-    #
-    #         print(target_server_id)
-    #
-    #         # await client.wait_until_ready()
-    #         # do stuff to check for token and add Advisor role in Exogen Discord server
-    #         guild = client.get_guild(id=target_server_id)
-    #         # channel = "#advisors_chat"
-    #         channel = client.get_channel(id=target_channel_id)
-    #         # role = "@Advisor"
-    #         role = ctx.guild.get_role(id=target_role_id)
-    #         member = guild.get_member(ctx.message.author.id)
-    #         if member:
-    #             await member.add_roles(role)
-    #
-    #         async with ctx.typing():
-    #             await asyncio.sleep(2)
-    #             # await ctx.author.send("Congratulations {} and welcome to the {}'s channel {}!"
-    #             #                       .format(member.mention, role, channel))
-    #             await ctx.author.send("Congratulations {} and welcome to the {}'s channel {}!"
-    #                                   .format(member.mention, role.mention, channel.mention))
+            guild = self.bot.get_guild(target_server_id)
+            channel = self.bot.get_channel(target_channel_id)
+            role = guild.get_role(target_role_id)
+            member = guild.get_member(ctx.message.author.id)
+
+            if member:
+                await member.add_roles(role)
+                async with ctx.typing():
+                    await asyncio.sleep(2)
+                    await ctx.author.send("Congratulations {} and welcome to the {}'s channel {}!"
+                                          .format(member.mention, role.name, channel.mention))
+            else:
+                async with ctx.typing():
+                    await asyncio.sleep(1)
+                    await ctx.author.send("You are not a member on this server.")
 
     # @client.event()  # event for checking donor status once per day
 
     @commands.command(
         pass_context=True,
         name='nodonor',
+        help='checks if users are still donors',
         description='Bot will check server at least once per day and check for any users that are no longer listed in '
                     'the database as a donor. Then notify the user that they will be removed from the Advisors role '
                     'and channels, as well as provide contact info if they believe this to be an error.'

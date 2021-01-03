@@ -15,6 +15,7 @@ class Calculation(commands.Cog):
         description='Command to measure distance between two systems, given their rad-Z coordinates.\n'
                     'Second coordinate is set to Sol (00000-00000) by default.',
         aliases=['d'],
+        help='calculates distance between two systems',
         usage='<rad-Z 1> <rad-Z 2>\n'
               'ex: !d 44053-00043 00000-00000'
     )
@@ -48,6 +49,12 @@ class Calculation(commands.Cog):
             await ctx.author.send("`The distance between {} and {} is {}JU.`".format(destination, origin, dist))
         return
 
+    @distance.error
+    async def dm_error(self, ctx):
+        if isinstance(self, commands.CheckFailure):
+            text = "Sorry, this can only be used in DMs."
+            await ctx.send(ctx.message.channel, text)
+
     # calculates commission of various missions
     @commands.command(
         name='commission',
@@ -55,6 +62,7 @@ class Calculation(commands.Cog):
                     'given their rad-Z coordinates and any applicable upgrades.\n'
                     'Origin coordinate is set to Sol (00000-00000) by default.',
         aliases=['c'],
+        help='calculates commissions from missions',
         usage='<destination rad-Z> <origin rad-Z> '
               '<Mission (Probe/PB, Pioneer/PN, Science Vessel/SV)> <Previously explored (True/False)> '
               '<Astro-cartography Database upgrade (True/False)> '
@@ -151,6 +159,12 @@ class Calculation(commands.Cog):
                 await ctx.author.send("```***ERROR*** You must enter a viable mission type or abbreviation.```")
         return
 
+    @commission.error
+    async def dm_error(self, ctx):
+        if isinstance(self, commands.CheckFailure):
+            text = "Sorry, this can only be used in DMs."
+            await ctx.send(ctx.message.channel, text)
+
     # command info
     # noinspection PyUnboundLocalVariable
     @commands.command(
@@ -159,6 +173,7 @@ class Calculation(commands.Cog):
                     'along with associated costs.\n'
                     'Origin coordinate is set to Sol (00000-00000) by default.',
         aliases=['m'],
+        help='calculates mission times and costs',
         usage='<destination rad-Z> <origin rad-Z> <# of bodies> '
               '<Mission (All, Probe/PB, Pioneer/PN, Fuel Station/FS, Small Orbital Station/SOS, '
               'Science Vessel/SV, Mining Operation/MO, Lunar Base/LB)> '
@@ -169,8 +184,8 @@ class Calculation(commands.Cog):
     )
     @commands.dm_only()
     # function that command runs
-    async def mission(self, ctx, destination, origin='Sol', bodies=1, mission="All", ss=False, aw=False, smd=False,
-                      vle=False, mo_type='N/A'):
+    async def missions(self, ctx, destination, origin='Sol', bodies=1, mission="All", ss=False, aw=False, smd=False,
+                       vle=False, mo_type='N/A'):
         # noinspection PyGlobalUndefined
         global probe_time
         if destination == 'Sol' or destination == 'sol':
@@ -257,6 +272,12 @@ class Calculation(commands.Cog):
         else:
             await ctx.author.send("```***ERROR*** You must enter a viable mission type, abbreviation, or 'All'.```")
         return
+
+    @missions.error
+    async def dm_error(self, ctx):
+        if isinstance(self, commands.CheckFailure):
+            text = "Sorry, this can only be used in DMs."
+            await ctx.send(ctx.message.channel, text)
 
 
 def setup(bot):
