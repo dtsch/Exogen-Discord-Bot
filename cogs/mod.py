@@ -217,6 +217,7 @@ class Moderation(commands.Cog):
             await ctx.send(ctx.message.channel, text)
 
     @commands.command()
+    @commands.has_any_role('Assistant', 'Supervisor', 'Manager')
     async def test(self, ctx):
         msg = await ctx.send("Eh idk just react")
 

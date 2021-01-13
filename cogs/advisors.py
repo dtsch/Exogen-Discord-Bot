@@ -5,15 +5,17 @@ import aiohttp
 import requests
 import json
 import re
+import os
 
-# grabbing the config file
-with open('config.json') as config_file:
-    secrets = json.load(config_file)
+# # grabbing the config file
+# with open('config.json') as config_file:
+#     secrets = json.load(config_file)
+
 
 client = discord.Client()
 
 url = 'https://exogen.space/botapi/'
-api_key = secrets['SECRET_KEY']
+key = os.getenv("api_key")  # grabbing the API key
 database = ['D8GM3S', 'token6']
 target_server_id = 637447316856373268
 target_channel_id = 741106877722656789

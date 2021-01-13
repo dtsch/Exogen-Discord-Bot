@@ -64,3 +64,6 @@ webencodings==0.5.1
 Werkzeug==1.0.1
 yarl==1.6.3
 zope.interface==5.2.0
+
+discord~=1.0.1
+numpy~=1.19.5
