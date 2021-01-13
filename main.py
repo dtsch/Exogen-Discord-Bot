@@ -2,12 +2,39 @@ import asyncio
 import requests
 import json
 import re
+import os
+from dotenv import load_dotenv
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
+from itertools import cycle
+from flask import Flask
+from threading import Thread
 
-# grabbing the config file
-with open('config.json') as config_file:
-    secrets = json.load(config_file)
+# code to keep got awake when being web-hosted on Repl.it
+app = Flask('')
+
+
+@app.route('/')
+def main():
+    return "Your Bot Is Ready"
+
+
+def run():
+    app.run(host="0.0.0.0", port=8000)
+
+
+def keep_alive():
+    server = Thread(target=run)
+    server.start()
+
+
+# # grabbing the config file
+# with open('config.json') as config_file:
+#     secrets = json.load(config_file)
+
+# grabbing keys
+token = os.getenv("bot_token")
+key = os.getenv("api_key")
 
 
 # intents so bot can see members from DMs
@@ -21,12 +48,25 @@ bot = commands.Bot(
     , case_insensitive=True
     , intents=intents
 )
+# background task to keep bot awake when web-hosted on Repl.it
+status = cycle(['with Python','JetHub'])
+
+
+@bot.event
+async def on_ready():
+    change_status.start()
+    print("Your bot is ready")
+
+
+@tasks.loop(seconds=10)
+async def change_status():
+    await bot.change_presence(activity=discord.Game(name="Exogen"))
 
 # gathering the commands
 cogs = [
-    'cogs.calcs'
-    , 'cogs.mod'
+    'cogs.mod'
     , 'cogs.advisors'
+    , 'cogs.calcs'
 ]
 
 
@@ -78,7 +118,7 @@ async def on_raw_reaction_add(payload):
     # rules reaction role
     if payload.channel_id == 704733802223894648 and payload.message_id == 706999325556867163:
         role = discord.utils.get(payload.member.guild.roles, name="Accepted Rules")
-        if str(payload.emoji) == '<:Exogen:749051544745541744>' or str(payload.emoji) == '👍':
+        if str(payload.emoji) == '<:Exogen:749051544745541744>': # or str(payload.emoji) == '👍':
             await payload.member.add_roles(role)
     # RP reaction role
     elif payload.channel_id == 774834872719507496 and payload.message_id == 774845668745019392:
@@ -129,4 +169,5 @@ async def on_ready():
 
 
 # run bot
-bot.run(secrets['token'])
+# bot.run(secrets['token'])
+bot.run(token)
