@@ -110,7 +110,7 @@ class Advisors(commands.Cog):
         help='checks the api',
         description='Bot checks the api'
     )
-    async def api(self, ctx, member: discord.member):
+    async def api(self, ctx):
         post = requests.post(url, data=test)
         print(post.text)
 
