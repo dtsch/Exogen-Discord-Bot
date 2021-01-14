@@ -16,6 +16,13 @@ client = discord.Client()
 
 url = 'https://exogen.space/botapi/'
 key = os.getenv("api_key")  # grabbing the API key
+test_id = '358287505256218624'
+test_token = '123abc'
+test = {
+    'SECRET_KEY': key,
+    'DISCORD_ID': test_id,
+    'DONATION_TOKEN': test_token
+}
 database = ['D8GM3S', 'token6']
 target_server_id = 637447316856373268
 target_channel_id = 741106877722656789
@@ -96,6 +103,16 @@ class Advisors(commands.Cog):
         guild = client.get_guild(id=target_server_id)
         role = ctx.guild.get_role(id=target_role_id)  # Test server Guild and Role IDs
         await member.remove_roles(role)
+
+    @commands.command(
+        pass_context=True,
+        name='api',
+        help='checks the api',
+        description='Bot checks the api'
+    )
+    async def api(self, ctx, member: discord.member):
+        post = requests.post(url, data=test)
+        print(post.text)
 
 
 def setup(bot):
