@@ -6,14 +6,13 @@ attrs==20.3.0
 CacheControl==0.12.6
 cachy==0.3.0
 certifi==2020.12.5
-chardet @ file:///C:/Users/drewt/AppData/Local/pypoetry/Cache/artifacts/8f/6f/1c/8085d730ad63c462222af30d0d01c4bd0caca5287e40b63c1fe8f529b7/chardet-3.0.4-py2.py3-none-any.whl
+chardet==4.0.0
 cleo==0.8.1
 click==7.1.2
 clikit==0.6.2
 crashtest==0.3.1
 cycler==0.10.0
 DateTime==4.3
-discord @ file:///C:/Users/drewt/AppData/Local/pypoetry/Cache/artifacts/ba/c3/61/2d5cc378f39cf5ceccfa4c76fa5480afbb507598535f8864acd2289c95/discord-1.0.1-py3-none-any.whl
 discord.py==1.6.0
 distlib==0.3.1
 filelock==3.0.12
@@ -31,7 +30,7 @@ MarkupSafe==1.1.1
 matplotlib==3.3.3
 msgpack==1.0.2
 multidict==5.1.0
-numpy @ file:///C:/Users/drewt/AppData/Local/pypoetry/Cache/artifacts/d9/ad/27/89ff32b12d911f31aa72ba749f8db6059d0c51650302f752d24523ac68/numpy-1.19.5-cp39-cp39-win_amd64.whl
+numpy==1.19.5
 packaging==20.8
 pandas==1.2.0
 pastel==0.2.1

@@ -25,7 +25,6 @@ class Moderation(commands.Cog):
         usage="<role> <member>"
     )
     @commands.has_any_role('Assistant', 'Supervisor', 'Manager')
-    # add Assistant, Supervisor, and Manager roles here
     async def assign(self, ctx, role: discord.Role, member: discord.Member = None):
         member = member or ctx.message.author
         await member.add_roles(role)
