@@ -43,6 +43,11 @@ class Advisors(commands.Cog):
         usage="<token>"
     )
     async def donor(self, ctx, token='info'):
+        post = {
+            'SECRET_KEY': key,
+            'DISCORD_ID': ctx.author.id,
+            'DONATION_TOKEN': token
+        }
         if token == 'info':  # returning info about verifying donor status
             await asyncio.sleep(1)
             await ctx.author.send("Please go to the Exogen site and in the My Corporation panel on the left side "
@@ -113,6 +118,7 @@ class Advisors(commands.Cog):
     async def api(self, ctx):
         post = requests.post(url, data=test)
         print(post.text)
+        await ctx.member.send(ctx.author.id)
 
 
 def setup(bot):
