@@ -153,30 +153,34 @@ class Advisors(commands.Cog):
         aliases=['rocket']
     )
     @commands.has_any_role('Assistant', 'Supervisor', 'Manager')
+    @commands.cooldown(1, 60*60*24, commands.BucketType.user)
     async def rocket(self, ctx):
         async with ctx.typing():
             await asyncio.sleep(2)
             await ctx.send("```Rocket will be launching in T minus...```")
             await asyncio.sleep(0.1)
-            await ctx.send("```md"
-                           "5...```")
+            await ctx.send("```5...```")
             await asyncio.sleep(1)
-            await ctx.send("```md"
-                           "4...```")
+            await ctx.send("```4...```")
             await asyncio.sleep(1)
-            await ctx.send("```fix"
-                           "3...```")
+            await ctx.send("```3...```")
             await asyncio.sleep(1)
-            await ctx.send("```css"
-                           "2...```")
+            await ctx.send("```2...```")
             await asyncio.sleep(1)
-            await ctx.send("```cs"
-                           "1...```")
+            await ctx.send("```1...```")
             await asyncio.sleep(1)
             await ctx.send(rocket)
             await asyncio.sleep(2)
-            await ctx.send("```tex"
-                           "Liftoff, we have liftoff!```")
+            await ctx.send("```Liftoff, we have liftoff!```")
+
+    @rocket.error
+    async def rocket_error(self, ctx):
+        if isinstance(self, commands.CommandOnCooldown):
+            msg = 'Rocket can be launched again {:.2f}h {:.2f}m {:.2f}s'\
+                .format(self.retry_after//(60*60), self.retry_after//60, self.retry_after%60)
+            await ctx.send(msg)
+        else:
+            raise self
 
 
 def setup(bot):
