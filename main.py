@@ -76,7 +76,7 @@ status = cycle(['Exogen  .......',
 #     print("Your bot is ready")
 
 
-@tasks.loop(seconds=5)
+@tasks.loop(seconds=2)
 async def change_status():
     await bot.change_presence(activity=discord.Game(next(status)))
 
