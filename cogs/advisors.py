@@ -21,7 +21,7 @@ target_server_id = 637447316856373268
 target_channel_id = 741106877722656789
 target_role_id = 741279442416173096
 
-rocket = r"""\
+rocket = r"""```
        !
        !
        ^
@@ -49,8 +49,7 @@ rocket = r"""\
     ((   ))
      (( ))
       ( )
-       .
-       """
+       .```"""
 
 
 class Advisors(commands.Cog):
@@ -157,19 +156,19 @@ class Advisors(commands.Cog):
     async def rocket(self, ctx):
         async with ctx.typing():
             await asyncio.sleep(2)
-            await ctx.send("Rocket will be launching in T minus 5...")
+            await ctx.send("```Rocket will be launching in T minus 5...```")
             await asyncio.sleep(1)
-            await ctx.send("4...")
+            await ctx.send("```4...```")
             await asyncio.sleep(1)
-            await ctx.send("3...")
+            await ctx.send("```3...```")
             await asyncio.sleep(1)
-            await ctx.send("2...")
+            await ctx.send("```2...```")
             await asyncio.sleep(1)
-            await ctx.send("1...")
+            await ctx.send("```1...```")
             await asyncio.sleep(1)
             await ctx.send(rocket)
             await asyncio.sleep(2)
-            await ctx.send("Liftoff, we have liftoff!")
+            await ctx.send("```Liftoff, we have liftoff!```")
 
 
 def setup(bot):
