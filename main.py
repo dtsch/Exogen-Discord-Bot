@@ -48,18 +48,18 @@ bot = commands.Bot(
     , intents=intents
 )
 # background task to keep bot awake when web-hosted on Repl.it
-status = cycle(['with Python','JetHub'])
+status = cycle(['Exogen','EXOGEN'])
 
 
-@bot.event
-async def on_ready():
-    change_status.start()
-    print("Your bot is ready")
+# @bot.event
+# async def on_ready():
+#     change_status.start()
+#     print("Your bot is ready")
 
 
 @tasks.loop(seconds=10)
 async def change_status():
-    await bot.change_presence(activity=discord.Game(name="Exogen"))
+    await bot.change_presence(activity=discord.Game(next(status)))
 
 # gathering the commands
 cogs = [
@@ -160,6 +160,7 @@ async def on_ready():
     print(f'Discord version is: {discord.__version__}')
     print('------------------------------------------------------')
     await bot.change_presence(activity=discord.Game(name="Exogen"))
+    change_status.start()
     for cog in cogs:
         bot.load_extension(cog)
         print(f'{cog} is ready.')
