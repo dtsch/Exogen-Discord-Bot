@@ -16,13 +16,6 @@ client = discord.Client()
 
 url = 'https://exogen.space/botapi/'
 key = os.getenv("api_key")  # grabbing the API key
-test_id = '358287505256218624'
-test_token = '123abc'
-test = {
-    'SECRET_KEY': key,
-    'DISCORD_ID': test_id,
-    'DONATION_TOKEN': test_token
-}
 database = ['D8GM3S', 'token6']
 target_server_id = 637447316856373268
 target_channel_id = 741106877722656789
