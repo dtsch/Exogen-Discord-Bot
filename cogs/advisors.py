@@ -1,5 +1,5 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 import asyncio
 import aiohttp
 import requests
@@ -43,11 +43,6 @@ class Advisors(commands.Cog):
         usage="<token>"
     )
     async def donor(self, ctx, token='info'):
-        post = {
-            'SECRET_KEY': key,
-            'DISCORD_ID': ctx.author.id,
-            'DONATION_TOKEN': token
-        }
         if token == 'info':  # returning info about verifying donor status
             await asyncio.sleep(1)
             await ctx.author.send("Please go to the Exogen site and in the My Corporation panel on the left side "
@@ -89,8 +84,7 @@ class Advisors(commands.Cog):
                     await asyncio.sleep(1)
                     await ctx.author.send("You are not a member on this server.")
 
-    # @client.event()  # event for checking donor status once per day
-
+    # @tasks.loop(seconds=60*60*24) # loop for checking donor status once per day
     @commands.command(
         pass_context=True,
         name='nodonor',
@@ -115,10 +109,19 @@ class Advisors(commands.Cog):
         help='checks the api',
         description='Bot checks the api'
     )
-    async def api(self, ctx):
-        post = requests.post(url, data=test)
-        print(post.text)
-        await ctx.member.send(ctx.author.id)
+    async def api(self, ctx, token='123abc', member='test'):
+        if member == 'test':
+            mid = "358287505256218624"
+        else:
+            mid = ctx.author.id
+        data = {
+            'SECRET_KEY': key,
+            'DISCORD_ID': mid,
+            'DONATION_TOKEN': token
+        }
+        post = requests.post(url, data)
+        print(post.status_code)
+        await ctx.send(post.status_code)
 
 
 def setup(bot):
