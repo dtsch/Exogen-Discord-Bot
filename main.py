@@ -48,7 +48,26 @@ bot = commands.Bot(
     , intents=intents
 )
 # background task to keep bot awake when web-hosted on Repl.it
-status = cycle(['Exogen','EXOGEN'])
+status = cycle(['Exogen  .......',
+                'Exogen  ......:',
+                'Exogen  .....:⋮',
+                'Exogen  ....:⋮:',
+                'Exogen  ...:⋮:.',
+                'Exogen  ..:⋮:..',
+                'Exogen  .:⋮:...',
+                'Exogen  :⋮:....',
+                'Exogen  ⋮:.....',
+                'Exogen  :......',
+                'Exogen  .......',
+                'Exogen  :......',
+                'Exogen  ⋮:.....',
+                'Exogen  :⋮:....',
+                'Exogen  .:⋮:...',
+                'Exogen  ..:⋮:..',
+                'Exogen  ...:⋮:.',
+                'Exogen  ....:⋮:',
+                'Exogen  .....:⋮',
+                'Exogen  ......:'])
 
 
 # @bot.event
@@ -57,7 +76,7 @@ status = cycle(['Exogen','EXOGEN'])
 #     print("Your bot is ready")
 
 
-@tasks.loop(seconds=10)
+@tasks.loop(seconds=0.1)
 async def change_status():
     await bot.change_presence(activity=discord.Game(next(status)))
 
