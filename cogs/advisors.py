@@ -6,10 +6,8 @@ import requests
 import json
 import re
 import os
-
-# # grabbing the config file
-# with open('config.json') as config_file:
-#     secrets = json.load(config_file)
+import random
+from artwork import rockets
 
 
 client = discord.Client()
@@ -20,36 +18,6 @@ database = ['D8GM3S', 'token6']
 target_server_id = 637447316856373268
 target_channel_id = 741106877722656789
 target_role_id = 741279442416173096
-
-rocket = r"""```
-       !
-       !
-       ^
-      / \
-     /___\
-    |=   =|
-    |     |
-    |     |
-    |     |
-    |     |
-    |     |
-    |     |
-    |     |
-    |     |
-    |     |
-   /|##!##|\
-  / |##!##| \
- /  |##!##|  \
-|  / ^ | ^ \  |
-| /  ( | )  \ |
-|/   ( | )   \|
-    ((   ))
-   ((  :  ))
-   ((  :  ))
-    ((   ))
-     (( ))
-      ( )
-       .```"""
 
 
 class Advisors(commands.Cog):
@@ -169,7 +137,7 @@ class Advisors(commands.Cog):
             await asyncio.sleep(1)
             await ctx.send("```1...```")
             await asyncio.sleep(1)
-            await ctx.send(rocket)
+            await ctx.send(random.choice(rockets))
             await asyncio.sleep(2)
             await ctx.send("```Liftoff, we have liftoff!```")
 
