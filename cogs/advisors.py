@@ -174,13 +174,13 @@ class Advisors(commands.Cog):
             await ctx.send("```Liftoff, we have liftoff!```")
 
     @rocket.error
-    async def rocket_error(self, ctx):
-        if isinstance(self, commands.CommandOnCooldown):
-            msg = 'Rocket can be launched again {:.2f}h {:.2f}m {:.2f}s'\
-                .format(self.retry_after//(60*60), self.retry_after//60, self.retry_after%60)
+    async def rocket_error(self, ctx, error):
+        if isinstance(error, commands.CommandOnCooldown):
+            msg = 'Rocket can be launched again {:.0f}h {:.0f}m {:.0f}s'\
+                .format(error.retry_after//(60*60), error.retry_after//60, error.retry_after%60)
             await ctx.send(msg)
         else:
-            raise self
+            raise error
 
 
 def setup(bot):
