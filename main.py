@@ -6,25 +6,7 @@ import os
 import discord
 from discord.ext import commands, tasks
 from itertools import cycle
-from flask import Flask
-from threading import Thread
-
-# code to keep got awake when being web-hosted on Repl.it
-app = Flask('')
-
-
-@app.route('/')
-def main():
-    return "Your Bot Is Ready"
-
-
-def run():
-    app.run(host="0.0.0.0", port=8000)
-
-
-def keep_alive():
-    server = Thread(target=run)
-    server.start()
+import keep_alive
 
 
 # # grabbing the config file
@@ -188,6 +170,8 @@ async def on_ready():
     print('------------------------------------------------------')
     return
 
+# run Flask script to keep bot online
+keep_alive.keep_alive()
 
 # run bot
 # bot.run(secrets['token'])
