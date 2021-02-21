@@ -145,8 +145,11 @@ class Advisors(commands.Cog):
     async def rocket_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
             msg = 'Rocket can be launched again {:.0f}h {:.0f}m {:.0f}s'\
-                .format(error.retry_after//(60*60), (error.retry_after%60*60)//60, error.retry_after%60)
+                .format(error.retry_after//(60*60), (error.retry_after % 60*60)//60, error.retry_after % 60)
             await ctx.send(msg)
+        elif isinstance(error, commands.MissingPermissions):
+            text = f"I'm sorry {ctx.message.author}, I can't let you do that."
+            await ctx.send(ctx.message.channel, text)
         else:
             raise error
 
