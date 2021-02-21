@@ -2,16 +2,15 @@
 name = "exogen-discord-bot"
 version = "0.1.0"
 description = "Python bot for integrating Exogen with it's Discord server."
-authors = ["Drew Tschetter <@dchedz>"]
-license = "MIT License"
+authors = ["drewt <drew.tschetter@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
 asyncio = "^3.4.3"
-"discord.py" = "^1.6.0"
+numpy = "^1.20.1"
 Flask = "^1.1.2"
-numpy = "^1.19.5"
 DateTime = "^4.3"
+"discord.py" = "^1.6.0"
 
 [tool.poetry.dev-dependencies]
 
