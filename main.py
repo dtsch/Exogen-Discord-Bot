@@ -1,7 +1,7 @@
-import asyncio
-import requests
-import json
-import re
+# import asyncio
+# import requests
+# import json
+# import re
 import os
 import discord
 from discord.ext import commands, tasks
