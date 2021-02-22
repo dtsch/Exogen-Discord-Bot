@@ -101,6 +101,9 @@ async def dm(ctx):
 
 @bot.event
 async def on_member_join(member):
+    guild = member.guild
+    channel = bot.get_channel(813417162249207818)
+    await channel.edit(name=f'members {guild.member_count}')
     rules = bot.get_channel(704733802223894648)
     nav = bot.get_channel(771885969715626005)
     await member.send("Welcome, {}!".format(member.name))
@@ -111,6 +114,13 @@ async def on_member_join(member):
                       "And for advice on getting your corporation up and running, check out this startup guide from "
                       "the Pale Blue Dot megacorp:\n"
                       "https://discord.com/channels/637447316856373268/704733458227789937/745698128627236965")
+
+
+@bot.event
+async def on_member_remove(member):
+    guild = member.guild
+    channel = bot.get_channel(813417162249207818)
+    await channel.edit(name=f'members {guild.member_count}')
 
 
 @bot.event
