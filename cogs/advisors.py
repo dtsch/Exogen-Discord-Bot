@@ -7,6 +7,7 @@ import json
 import re
 import os
 import random
+import datetime as dt
 from artwork import rockets
 
 
@@ -75,7 +76,19 @@ class Advisors(commands.Cog):
                     await asyncio.sleep(1)
                     await ctx.author.send("You are not a member on this server.")
 
-    # @tasks.loop(seconds=60*60*24) # loop for checking donor status once per day
+    # # @tasks.loop(seconds=60*60*24) # loop for checking donor status once per day
+    # @tasks.loop(seconds=60*60*24)
+    # async def donor_check(self, ctx):
+    #     # receive the member ID/name from the event that looks up users that have stopped donating
+    #     await ctx.member.send("Since it looks like you've disabled the donations you will be soon removed from the "
+    #                           "donors channel. If you think that could be a mistake, please contact us at pm@t-h-m.com "
+    #                           "as soon as possible. Thank you for your donations! It really means a lot for us!")
+    #     await asyncio.sleep(60*5)
+    #     guild = client.get_guild(id=target_server_id)
+    #     role = ctx.guild.get_role(id=target_role_id)  # Test server Guild and Role IDs
+    #     await member.remove_roles(role)
+
+    # change this to a task as above
     @commands.command(
         pass_context=True,
         name='nodonor',
@@ -120,7 +133,7 @@ class Advisors(commands.Cog):
         description="Bot launches an ASCII art rocket.",
         aliases=['rocket']
     )
-    @commands.has_any_role('Assistant', 'Supervisor', 'Manager')
+    @commands.has_any_role('Advisor', 'Assistant', 'Supervisor', 'Manager')
     @commands.cooldown(1, 60*60*24, commands.BucketType.user)
     async def rocket(self, ctx):
         async with ctx.typing():
@@ -152,6 +165,20 @@ class Advisors(commands.Cog):
             await ctx.send(ctx.message.channel, text)
         else:
             raise error
+
+    # thanks donors on the 1st of every month, in the advisors channel
+    @tasks.loop(seconds=60*60*24)
+    async def donor_thank(self, ctx):
+        guild = self.bot.get_guild(target_server_id)
+        channel = self.bot.get_channel(target_channel_id)
+        role = guild.get_role(target_role_id)
+        day = dt.date.today()
+        embed = discord.Embed(title="A Glorious Dawn", url="https://youtu.be/zSgiXGELjbc?t=40",
+                              description="A musical tribute to Carl Sagan and Stephen Hawking.",
+                              color=discord.Color.dark_purple())
+        if day.day == 22:
+            await channel.send(f"{role.name} thank you for being a monthly Exogen donor, "
+                               f"we're glad to have you chasing the glorious dawn with us.", embed=embed)
 
 
 def setup(bot):

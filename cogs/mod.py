@@ -306,28 +306,28 @@ class Moderation(commands.Cog):
             text = "Sorry {}, you do not have permissions to do that!".format(ctx.message.author)
             await ctx.send(ctx.message.channel, text)
 
-# # command to add a user to a role
-#     @commands.command(
-#         pass_context=True,
-#         name="prune_check",
-#         description="Bot checks how many users, that have been inactive for n days, would be pruned.\n"
-#                     "This function is only available to moderators and up.",
-#         help='Counts how many users would be pruned.',
-#         usage="<days (int)>"
-#     )
-#     @commands.has_any_role('Assistant', 'Supervisor', 'Manager')
-#     async def prune_check(self, ctx, n: int = 30):
-#         num = await discord.Guild.estimate_pruned_members(ctx.guild, days=n)
-#         await ctx.send(str(num) + " members would be pruned.")
-#
-#     @assign.error
-#     async def prune_check_error(self, error, ctx):
-#         if isinstance(error, commands.MissingPermissions):
-#             text = "Sorry {}, you do not have permissions to do that!".format(ctx.message.author)
-#             await ctx.send(ctx.message.channel, text)
-#         elif isinstance(error, discord.InvalidArgument):
-#             text = "You must enter number of days as an integer."
-#             await ctx.send(ctx.message.channel, text)
+# command to add a user to a role
+    @commands.command(
+        pass_context=True,
+        name="prune_check",
+        description="Bot checks how many users, that have been inactive for n days, would be pruned.\n"
+                    "This function is only available to moderators and up.",
+        help='Counts how many users would be pruned.',
+        usage="<days (int)>"
+    )
+    @commands.has_any_role('Assistant', 'Supervisor', 'Manager')
+    async def prune_check(self, ctx, n: int = 30):
+        num = await discord.Guild.estimate_pruned_members(ctx.guild, days=n)
+        await ctx.send(str(num) + " members would be pruned.")
+
+    @assign.error
+    async def prune_check_error(self, error, ctx):
+        if isinstance(error, commands.MissingPermissions):
+            text = "Sorry {}, you do not have permissions to do that!".format(ctx.message.author)
+            await ctx.send(ctx.message.channel, text)
+        elif isinstance(error, discord.InvalidArgument):
+            text = "You must enter number of days as an integer."
+            await ctx.send(ctx.message.channel, text)
 
 
 def setup(bot):
