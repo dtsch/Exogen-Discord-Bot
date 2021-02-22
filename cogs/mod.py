@@ -317,7 +317,7 @@ class Moderation(commands.Cog):
     )
     @commands.has_any_role('Assistant', 'Supervisor', 'Manager')
     async def prune_check(self, ctx, days: int):
-        num = client.estimate_pruned_members(ctx.guild, days)
+        num = ctx.guild.estimate_pruned_members(days)
         await ctx.send(num + " members would be pruned.")
 
     @assign.error
