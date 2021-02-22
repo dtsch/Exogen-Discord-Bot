@@ -180,6 +180,11 @@ class Advisors(commands.Cog):
             await channel.send(f"{role.name} thank you for being a monthly Exogen donor, "
                                f"we're glad to have you chasing the glorious dawn with us.", embed=embed)
 
+    @donor_thank.before_loop
+    async def before_printer(self):
+        print("Waiting for ready before starting donor thanks loop")
+        await self.bot.wait_until_ready()
+
 
 def setup(bot):
     bot.add_cog(Advisors(bot))

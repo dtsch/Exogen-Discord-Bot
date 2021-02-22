@@ -310,9 +310,9 @@ class Moderation(commands.Cog):
     @commands.command(
         pass_context=True,
         name="prune_check",
-        description="Bot checks how many users, that have been inactive for n days, would be pruned.\n"
+        description="Bot checks how many users, that have been inactive for n =< 30 days, would be pruned.\n"
                     "This function is only available to moderators and up.",
-        help='Counts how many users would be pruned.',
+        help='counts how many users would be pruned',
         usage="<days (int)>"
     )
     @commands.has_any_role('Assistant', 'Supervisor', 'Manager')
