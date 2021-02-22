@@ -316,8 +316,8 @@ class Moderation(commands.Cog):
         usage="<days (int)>"
     )
     @commands.has_any_role('Assistant', 'Supervisor', 'Manager')
-    async def prune_check(self, ctx, days: int):
-        await ctx.guild.estimate_pruned_members(days)
+    async def prune_check(self, days: int):
+        await self.guild.estimate_pruned_members(days)
         # await ctx.send(num + " members would be pruned.")
 
     @assign.error
