@@ -338,8 +338,7 @@ class Moderation(commands.Cog):
     async def mem_update(self, ctx):
         guild = self.bot.get_guild(637447316856373268)
         channel = self.bot.get_channel(813417162249207818)
-        bots = guild.get_role(794320108189253642)
-        await channel.edit(name=f'members {guild.member_count - len(bots.members)}')
+        await channel.edit(name=f'members {guild.member_count}')
 
     @commands.command(
         name='add_react',
