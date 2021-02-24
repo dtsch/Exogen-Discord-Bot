@@ -1,18 +1,17 @@
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+
+[tool]
 [tool.poetry]
+authors = ["drewt <drew.tschetter@gmail.com>"]
+description = "Python bot for integrating Exogen with it's Discord server."
 name = "exogen-discord-bot"
 version = "0.1.0"
-description = "Python bot for integrating Exogen with it's Discord server."
-authors = ["drewt <drew.tschetter@gmail.com>"]
-
 [tool.poetry.dependencies]
-python = "^3.9"
+DateTime = "^4.3"
+Flask = "^1.1.2"
 discord = "^1.0.1"
 numpy = "^1.20.0"
-Flask = "^1.1.2"
-DateTime = "^4.3"
-
+python = "^3.8"
 [tool.poetry.dev-dependencies]
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
