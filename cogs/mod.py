@@ -343,11 +343,12 @@ class Moderation(commands.Cog):
     @commands.command(
         name='add_react',
         description='Bot adds a reaction to specified message.',
-        help='bot adds a reaction to a message'
+        help='bot adds a reaction to a message',
+        usage='<reaction> <message id> <channel id>'
     )
     @commands.has_any_role('Assistant', 'Supervisor', 'Manager')
-    async def add_react(self, ctx, react, msg):
-        post = discord.Message(id=msg)
+    async def add_react(self, ctx, react, msg: str, chan):
+        post = await self.bot.get_message(chan, msg)
         await post.add_reaction(react)
 
 
