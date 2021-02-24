@@ -347,7 +347,7 @@ class Moderation(commands.Cog):
     )
     @commands.has_any_role('Assistant', 'Supervisor', 'Manager')
     async def add_react(self, ctx, react, msg):
-        post = self.bot.get_message(msg)
+        post = discord.Message(id=msg)
         await post.add_reaction(react)
 
 
