@@ -7,7 +7,7 @@ authors = ["drewt <drew.tschetter@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 discord = "^1.0.1"
-numpy = "^1.20.1"
+numpy = "^1.20.0"
 Flask = "^1.1.2"
 DateTime = "^4.3"
 
