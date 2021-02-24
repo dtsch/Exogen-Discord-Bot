@@ -347,8 +347,9 @@ class Moderation(commands.Cog):
         usage='<reaction> <message id> <channel id>'
     )
     @commands.has_any_role('Assistant', 'Supervisor', 'Manager')
-    async def add_react(self, ctx, react, msg: str, chan):
-        post = await self.bot.get_message(chan, msg)
+    async def add_react(self, ctx, react, msg, chan):
+        channel = await self.bot.get_channel(chan)
+        post = await channel.fetch_message(msg)
         await post.add_reaction(react)
 
 
