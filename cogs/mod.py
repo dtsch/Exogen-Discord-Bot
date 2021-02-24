@@ -334,7 +334,7 @@ class Moderation(commands.Cog):
         description='Bot updates member count.',
         help='bot updates member count'
     )
-    async def mem_update(self):
+    async def mem_update(self, ctx):
         guild = self.bot.get_guild(637447316856373268)
         channel = self.bot.get_channel(813417162249207818)
         await channel.edit(name=f'members {guild.member_count}')
