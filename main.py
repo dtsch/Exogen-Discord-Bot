@@ -99,6 +99,17 @@ async def dm(ctx):
     await ctx.author.send("Hey, what do you need?")
 
 
+@bot.command(
+    name='member_update',
+    description='Bot updates member count.',
+    help='bot updates member count'
+)
+async def mem_update():
+    guild = bot.get_guild(637447316856373268)
+    channel = bot.get_channel(813417162249207818)
+    await channel.edit(name=f'members {guild.member_count}')
+
+
 @bot.event
 async def on_member_join(member):
     guild = member.guild
