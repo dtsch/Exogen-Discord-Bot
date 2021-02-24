@@ -103,7 +103,8 @@ async def dm(ctx):
 async def on_member_join(member):
     guild = member.guild
     channel = bot.get_channel(813417162249207818)
-    await channel.edit(name=f'members {guild.member_count}')
+    bots = guild.get_role(794320108189253642)
+    await channel.edit(name=f'members {guild.member_count - len(bots.members)}')
     rules = bot.get_channel(704733802223894648)
     nav = bot.get_channel(771885969715626005)
     await member.send("Welcome, {}!".format(member.name))
@@ -120,7 +121,8 @@ async def on_member_join(member):
 async def on_member_remove(member):
     guild = member.guild
     channel = bot.get_channel(813417162249207818)
-    await channel.edit(name=f'members {guild.member_count}')
+    bots = guild.get_role(794320108189253642)
+    await channel.edit(name=f'members {guild.member_count - len(bots.members)}')
 
 
 @bot.event
