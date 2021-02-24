@@ -348,8 +348,8 @@ class Moderation(commands.Cog):
     )
     @commands.has_any_role('Assistant', 'Supervisor', 'Manager')
     async def add_react(self, ctx, react, msg, chan):
-        channel = await self.bot.get_channel(chan)
-        post = await channel.fetch_message(msg)
+        channel = self.bot.get_channel(chan)
+        post = channel.fetch_message(msg)
         await post.add_reaction(react)
 
 
