@@ -334,10 +334,21 @@ class Moderation(commands.Cog):
         description='Bot updates member count.',
         help='bot updates member count'
     )
-    async def mem_update(self):
+    @commands.has_any_role('Assistant', 'Supervisor', 'Manager')
+    async def mem_update(self, ctx):
         guild = self.bot.get_guild(637447316856373268)
         channel = self.bot.get_channel(813417162249207818)
         await channel.edit(name=f'members {guild.member_count}')
+
+    @commands.command(
+        name='add_react',
+        description='Bot adds a reaction to specified message.',
+        help='bot adds a reaction to a message'
+    )
+    @commands.has_any_role('Assistant', 'Supervisor', 'Manager')
+    async def add_react(self, ctx, react, msg):
+        post = self.bot.get_message(msg)
+        await post.add_reaction(react)
 
 
 def setup(bot):
