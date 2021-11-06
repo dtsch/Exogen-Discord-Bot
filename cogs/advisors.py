@@ -167,16 +167,16 @@ class Advisors(commands.Cog):
             raise error
 
     # thanks donors on the 1st of every month, in the advisors channel
-    @tasks.loop(seconds=60*60*24)
+    @tasks.loop(hours=24)
     async def donor_thank(self, ctx):
         guild = self.bot.get_guild(target_server_id)
         channel = self.bot.get_channel(target_channel_id)
         role = guild.get_role(target_role_id)
         day = dt.date.today()
-        embed = discord.Embed(title="A Glorious Dawn", url="https://youtu.be/zSgiXGELjbc?t=40",
+        embed = discord.Embed(title="A Glorious Dawn", url="https://youtu.be/zSgiXGELjbc",
                               description="A musical tribute to Carl Sagan and Stephen Hawking.",
                               color=discord.Color.dark_purple())
-        if day.day == 22:
+        if day.day == 1:
             await channel.send(f"{role.name} thank you for being a monthly Exogen donor, "
                                f"we're glad to have you chasing the glorious dawn with us.", embed=embed)
 
