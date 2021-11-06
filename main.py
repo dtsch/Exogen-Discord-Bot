@@ -132,7 +132,7 @@ async def on_raw_reaction_add(payload):
     # rules reaction role
     if payload.channel_id == 704733802223894648 and payload.message_id == 706999325556867163:
         role = discord.utils.get(payload.member.guild.roles, name="Accepted Rules")
-        role_b = discord.utils.get(payload.member.guild.roles, id=906375433329725451)
+        role_b = discord.utils.get(payload.member.guild.roles, name="Not Accepted Rules")  #id=906375433329725451)
         if str(payload.emoji) == '<:Exogen:749051544745541744>':  # or str(payload.emoji) == '👍':
             await payload.member.add_roles(role)
             await payload.member.remove_roles(role_b)
@@ -155,10 +155,10 @@ async def on_raw_reaction_remove(payload):
     # rules reaction role
     if payload.channel_id == 704733802223894648 and payload.message_id == 706999325556867163:
         role = discord.utils.get(guild.roles, name="Accepted Rules")
-        role_b = discord.utils.get(member.guild.roles, id=906375433329725451)
+        role_b = discord.utils.get(member.guild.roles, name="Not Accepted Rules")  #id=906375433329725451)
         if str(payload.emoji) == '<:Exogen:749051544745541744>':  # or str(payload.emoji) == '👍':
             await member.remove_roles(role)
-            await member.remove_roles(role_b)
+            await member.add_roles(role_b)
     # RP reaction role
     elif payload.channel_id == 774834872719507496 and payload.message_id == 774845668745019392:
         role = discord.utils.get(guild.roles, name="RP opt in")
