@@ -5,6 +5,7 @@
 import os
 import discord
 from discord.ext import commands, tasks
+from discord_slash import SlashCommand, SlashContext
 from itertools import cycle
 import keep_alive
 
@@ -29,6 +30,8 @@ bot = commands.Bot(
     , case_insensitive=True
     , intents=intents
 )
+slash = SlashCommand(bot)
+
 # background task to keep bot awake when web-hosted on Repl.it
 status = cycle(['Exogen  ░░░░░░░░',
                 'Exogen  ░░░░░░░▒',
@@ -96,6 +99,15 @@ async def eval_error(error, ctx):
     usage=''
 )
 async def dm(ctx):
+    await ctx.author.send("Hey, what do you need?")
+
+
+# slash command that DMs the sender
+@slash.slash(
+    name='direct_message',
+    description='Initiates a DM with the user.'
+)
+async def _dm(ctx: SlashContext):
     await ctx.author.send("Hey, what do you need?")
 
 
