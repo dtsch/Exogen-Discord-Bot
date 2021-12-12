@@ -30,7 +30,7 @@ bot = commands.Bot(
     , case_insensitive=True
     , intents=intents
 )
-slash = SlashCommand(bot)
+slash = SlashCommand(bot, sync_commands=True)
 
 # background task to keep bot awake when web-hosted on Repl.it
 status = cycle(['Exogen  ░░░░░░░░',
@@ -105,10 +105,12 @@ async def dm(ctx):
 # slash command that DMs the sender
 @slash.slash(
     name='direct_message',
-    description='Initiates a DM with the user.'
+    description='Initiates a DM with the user.',
+    guild_ids=[637447316856373268]
 )
-async def _dm(ctx: SlashContext):
+async def _dm(ctx):
     await ctx.author.send("Hey, what do you need?")
+    await ctx.send("Sliding into those DMs.")
 
 
 @bot.event
