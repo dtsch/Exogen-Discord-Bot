@@ -143,15 +143,8 @@ async def on_member_remove(member):
 async def on_raw_reaction_add(payload):
     guild = bot.get_guild(payload.guild_id)
     member = discord.utils.get(guild.members, id=payload.user_id)
-    # rules reaction role
-    if payload.channel_id == 704733802223894648 and payload.message_id == 706999325556867163:
-        role = discord.utils.get(payload.member.guild.roles, name="Accepted Rules")
-        role_b = discord.utils.get(payload.member.guild.roles, name="Not Accepted Rules")  #id=906375433329725451)
-        if str(payload.emoji) == '<:Exogen:749051544745541744>':  # or str(payload.emoji) == '👍':
-            await payload.member.add_roles(role)
-            # await payload.member.remove_roles(role_b)
     # RP reaction role
-    elif payload.channel_id == 774834872719507496 and payload.message_id == 774845668745019392:
+    if payload.channel_id == 774834872719507496 and payload.message_id == 774845668745019392:
         role = discord.utils.get(payload.member.guild.roles, name="RP opt in")
         if str(payload.emoji) == '<:BHC:749478461562683443>':
             await payload.member.add_roles(role)
@@ -160,21 +153,21 @@ async def on_raw_reaction_add(payload):
         role = discord.utils.get(payload.member.guild.roles, name="Researcher")
         if str(payload.emoji) == '<:ArchangelFoundation:749053627947286548>':
             await payload.member.add_roles(role)
+    # rules reaction role
+    # elif payload.channel_id == 704733802223894648 and payload.message_id == 706999325556867163:
+    #     role = discord.utils.get(payload.member.guild.roles, name="Accepted Rules")
+    #     role_b = discord.utils.get(payload.member.guild.roles, name="Not Accepted Rules")  #id=906375433329725451)
+    #     if str(payload.emoji) == '<:Exogen:749051544745541744>':  # or str(payload.emoji) == '👍':
+    #         await payload.member.add_roles(role)
+    #         # await payload.member.remove_roles(role_b)
 
 
 @bot.event
 async def on_raw_reaction_remove(payload):
     guild = bot.get_guild(payload.guild_id)
     member = discord.utils.get(guild.members, id=payload.user_id)
-    # rules reaction role
-    if payload.channel_id == 704733802223894648 and payload.message_id == 706999325556867163:
-        role = discord.utils.get(guild.roles, name="Accepted Rules")
-        role_b = discord.utils.get(member.guild.roles, name="Not Accepted Rules")  #id=906375433329725451)
-        if str(payload.emoji) == '<:Exogen:749051544745541744>':  # or str(payload.emoji) == '👍':
-            await member.remove_roles(role)
-            # await member.add_roles(role_b)
     # RP reaction role
-    elif payload.channel_id == 774834872719507496 and payload.message_id == 774845668745019392:
+    if payload.channel_id == 774834872719507496 and payload.message_id == 774845668745019392:
         role = discord.utils.get(guild.roles, name="RP opt in")
         if str(payload.emoji) == '<:BHC:749478461562683443>':
             await member.remove_roles(role)
@@ -183,6 +176,13 @@ async def on_raw_reaction_remove(payload):
         role = discord.utils.get(guild.roles, name="Researcher")
         if str(payload.emoji) == '<:ArchangelFoundation:749053627947286548>':
             await member.remove_roles(role)
+    # rules reaction role
+    # elif payload.channel_id == 704733802223894648 and payload.message_id == 706999325556867163:
+    #     role = discord.utils.get(guild.roles, name="Accepted Rules")
+    #     role_b = discord.utils.get(member.guild.roles, name="Not Accepted Rules")  #id=906375433329725451)
+    #     if str(payload.emoji) == '<:Exogen:749051544745541744>':  # or str(payload.emoji) == '👍':
+    #         await member.remove_roles(role)
+    #         # await member.add_roles(role_b)
 
 
 # bot start up event
