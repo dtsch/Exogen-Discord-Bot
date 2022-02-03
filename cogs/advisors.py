@@ -130,7 +130,7 @@ class Advisors(commands.Cog):
                 await ctx.send("Just one second, let me check.")
                 await asyncio.sleep(5)
                 await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
-                                    str(check_key(v, "corp"))
+                                    str(check_key(v, "corp") + "\n")
                                     for v in exogen_stats]).replace("'", "").replace('[', '').replace(']', ''))
         elif stat == "Distance":
             async with ctx.typing():
@@ -188,7 +188,7 @@ class Advisors(commands.Cog):
                 await ctx.send("Just one second, let me check.")
                 await asyncio.sleep(2.5)
                 await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
-                                    str(check_key(v, "corp"))
+                                    str(check_key(v, "corp") + "\n")
                                     for v in exogen_stats[0:6]]).replace("'", "").replace('[', '').replace(']', ''))
         elif stat == "Exogen":
             async with ctx.typing():
@@ -196,7 +196,7 @@ class Advisors(commands.Cog):
                 await ctx.send("Just one second, let me check.")
                 await asyncio.sleep(2.5)
                 await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
-                                    str(check_key(v, "corp"))
+                                    str(check_key(v, "corp") + "\n")
                                     for v in exogen_stats[7:22]]).replace("'", "").replace('[', '').replace(']', ''))
         else:
             async with ctx.typing():
