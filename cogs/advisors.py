@@ -93,6 +93,7 @@ class Advisors(commands.Cog):
         help='displays corp stats',
         usage="<All|Distance|Systems|Anomalies|Planets|SOS|Resources|Corps|Exogen>"
     )
+    @commands.has_any_role('Server Booster', 'Pale Blue Dot', 'Advisor', 'Assistant', 'Supervisor', 'Manager')
     async def stats(self, ctx, stat="All"):
         xml_data = requests.get(main_page).content
         soup = BeautifulSoup(xml_data, "html.parser")
@@ -101,12 +102,12 @@ class Advisors(commands.Cog):
             + [string for string in stats[1].stripped_strings] \
             + [string for string in stats[2].stripped_strings]
         exogen_stats = [
-            dict(title=all_stats[0].title(), value=all_stats[1], system=all_stats[2], corp=all_stats[3].title()),
-            dict(title=all_stats[4].title(), value=int(all_stats[5]), corp=all_stats[6].title()),
-            dict(title=all_stats[7].title(), value=int(all_stats[8]), corp=all_stats[9].title()),
-            dict(title=all_stats[10].title(), value=int(all_stats[11]), corp=all_stats[12].title()),
-            dict(title=all_stats[13].title(), value=int(all_stats[14]), corp=all_stats[15].title()),
-            dict(title=all_stats[16].title(), value=float(all_stats[17]), corp=all_stats[18].title()),
+            dict(title=all_stats[0].title(), value=all_stats[1], system=all_stats[2], corp=all_stats[3]),
+            dict(title=all_stats[4].title(), value=int(all_stats[5]), corp=all_stats[6]),
+            dict(title=all_stats[7].title(), value=int(all_stats[8]), corp=all_stats[9]),
+            dict(title=all_stats[10].title(), value=int(all_stats[11]), corp=all_stats[12]),
+            dict(title=all_stats[13].title(), value=int(all_stats[14]), corp=all_stats[15]),
+            dict(title=all_stats[16].title(), value=float(all_stats[17]), corp=all_stats[18]),
             dict(title=all_stats[19].title(), value=int(all_stats[20])),
             dict(title=all_stats[21].title(), value=int(all_stats[22])),
             dict(title=all_stats[23].title(), value=int(all_stats[24]), system=all_stats[25].title()),
