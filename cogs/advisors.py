@@ -124,10 +124,11 @@ class Advisors(commands.Cog):
             dict(title=all_stats[47].title(), value=int(all_stats[48].replace(' ', ''))),
             dict(title=all_stats[49].title(), value=int(all_stats[50].replace(' ', '')))
         ]
+        async with ctx.typing():
+            await asyncio.sleep(.5)
+            await ctx.send("Let me check that for you, just a sec.")
         if stat == "All":
             async with ctx.typing():
-                await asyncio.sleep(.5)
-                await ctx.send("Just one second, let me check.")
                 await asyncio.sleep(5)
                 await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
                                     str(check_key(v, "corp") + "\n")
@@ -135,48 +136,36 @@ class Advisors(commands.Cog):
         elif stat == "Distance":
             async with ctx.typing():
                 await asyncio.sleep(.5)
-                await ctx.send("Just one second, let me check.")
-                await asyncio.sleep(1)
                 await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
                                     str(check_key(v, "corp"))
                                     for v in exogen_stats[0]]).replace("'", "").replace('[', '').replace(']', ''))
         elif stat == "Systems":
             async with ctx.typing():
                 await asyncio.sleep(.5)
-                await ctx.send("Just one second, let me check.")
-                await asyncio.sleep(1)
                 await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
                                     str(check_key(v, "corp"))
                                     for v in exogen_stats[1:12:10]]).replace("'", "").replace('[', '').replace(']', ''))
         elif stat == "Anomalies":
             async with ctx.typing():
                 await asyncio.sleep(.5)
-                await ctx.send("Just one second, let me check.")
-                await asyncio.sleep(1)
                 await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
                                     str(check_key(v, "corp"))
                                     for v in exogen_stats[2:11:8]]).replace("'", "").replace('[', '').replace(']', ''))
         elif stat == "Planets":
             async with ctx.typing():
                 await asyncio.sleep(.5)
-                await ctx.send("Just one second, let me check.")
-                await asyncio.sleep(1)
                 await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
                                     str(check_key(v, "corp"))
                                     for v in exogen_stats[3:14:10]]).replace("'", "").replace('[', '').replace(']', ''))
         elif stat == "SOS":
             async with ctx.typing():
                 await asyncio.sleep(.5)
-                await ctx.send("Just one second, let me check.")
-                await asyncio.sleep(1)
                 await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
                                     str(check_key(v, "corp"))
                                     for v in [exogen_stats[4], exogen_stats[15], exogen_stats[16]]])
                                .replace("'", "").replace('[', '').replace(']', ''))
         elif stat == "Resources":
             async with ctx.typing():
-                await asyncio.sleep(.5)
-                await ctx.send("Just one second, let me check.")
                 await asyncio.sleep(1)
                 await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
                                     str(check_key(v, "corp"))
@@ -184,16 +173,12 @@ class Advisors(commands.Cog):
                                .replace("'", "").replace('[', '').replace(']', ''))
         elif stat == "Corps":
             async with ctx.typing():
-                await asyncio.sleep(.5)
-                await ctx.send("Just one second, let me check.")
-                await asyncio.sleep(2.5)
+                await asyncio.sleep(2)
                 await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
                                     str(check_key(v, "corp") + "\n")
                                     for v in exogen_stats[0:6]]).replace("'", "").replace('[', '').replace(']', ''))
         elif stat == "Exogen":
             async with ctx.typing():
-                await asyncio.sleep(.5)
-                await ctx.send("Just one second, let me check.")
                 await asyncio.sleep(2.5)
                 await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
                                     str(check_key(v, "corp") + "\n")
