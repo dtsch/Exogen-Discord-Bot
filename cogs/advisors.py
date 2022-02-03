@@ -3,13 +3,13 @@ from discord.ext import commands, tasks
 import asyncio
 import aiohttp
 import requests
+from bs4 import BeautifulSoup
 import json
 import re
 import os
 import random
 import datetime as dt
 from artwork import rockets
-
 
 client = discord.Client()
 
@@ -20,13 +20,22 @@ target_server_id = 637447316856373268
 target_channel_id = 741106877722656789
 target_role_id = 741279442416173096
 
+main_page = "https://exogen.space/"
+
+
+def check_key(dictionary, k):
+    if k in dictionary:
+        return str(" " + dictionary[k])
+    else:
+        return ""
+
 
 class Advisors(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
 
-    # command to add user to a role
+    # command to provide donor info
     @commands.command(
         pass_context=True,
         name="donor",
@@ -76,7 +85,128 @@ class Advisors(commands.Cog):
                     await asyncio.sleep(1)
                     await ctx.author.send("You are not a member on this server.")
 
+    # command to display Exogen stats
+    @commands.command(
+        pass_context=True,
+        name="stats",
+        description="Bot displays chosen Exogen stats",
+        help='displays corp stats',
+        usage="<All|Distance|Systems|Anomalies|Planets|SOS|Resources|Corps|Exogen>"
+    )
+    async def stats(self, ctx, stat="All"):
+        xml_data = requests.get(main_page).content
+        soup = BeautifulSoup(xml_data, "html.parser")
+        stats = soup.select(".statsBox")
+        all_stats = [string for string in stats[0].stripped_strings] \
+            + [string for string in stats[1].stripped_strings] \
+            + [string for string in stats[2].stripped_strings]
+        exogen_stats = [
+            dict(title=all_stats[0].title(), value=all_stats[1], system=all_stats[2], corp=all_stats[3].title()),
+            dict(title=all_stats[4].title(), value=int(all_stats[5]), corp=all_stats[6].title()),
+            dict(title=all_stats[7].title(), value=int(all_stats[8]), corp=all_stats[9].title()),
+            dict(title=all_stats[10].title(), value=int(all_stats[11]), corp=all_stats[12].title()),
+            dict(title=all_stats[13].title(), value=int(all_stats[14]), corp=all_stats[15].title()),
+            dict(title=all_stats[16].title(), value=float(all_stats[17]), corp=all_stats[18].title()),
+            dict(title=all_stats[19].title(), value=int(all_stats[20])),
+            dict(title=all_stats[21].title(), value=int(all_stats[22])),
+            dict(title=all_stats[23].title(), value=int(all_stats[24]), system=all_stats[25].title()),
+            dict(title=all_stats[26].title(), value=int(all_stats[27]), system=all_stats[28].title()),
+            dict(title=all_stats[29].title(), value=int(all_stats[30])),
+            dict(title=all_stats[31].title(), value=int(all_stats[32])),
+            dict(title=all_stats[33].title(), value=int(all_stats[34])),
+            dict(title=all_stats[35].title(), value=int(all_stats[36])),
+            dict(title=all_stats[37].title(), value=int(all_stats[38])),
+            dict(title=all_stats[39].title(), value=all_stats[40]),
+            dict(title=all_stats[41].title(), value=all_stats[42]),
+            dict(title=all_stats[43].title(), value=int(all_stats[44].replace(' ', ''))),
+            dict(title=all_stats[45].title(), value=int(all_stats[46].replace(' ', ''))),
+            dict(title=all_stats[47].title(), value=int(all_stats[48].replace(' ', ''))),
+            dict(title=all_stats[49].title(), value=int(all_stats[50].replace(' ', '')))
+        ]
+        if stat == "All":
+            async with ctx.typing():
+                await asyncio.sleep(.5)
+                await ctx.send("Just one second, let me check.")
+                await asyncio.sleep(5)
+                await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
+                                    str(check_key(v, "corp"))
+                                    for v in exogen_stats]).replace("'", "").replace('[', '').replace(']', ''))
+        elif stat == "Distance":
+            async with ctx.typing():
+                await asyncio.sleep(.5)
+                await ctx.send("Just one second, let me check.")
+                await asyncio.sleep(1)
+                await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
+                                    str(check_key(v, "corp"))
+                                    for v in exogen_stats[0]]).replace("'", "").replace('[', '').replace(']', ''))
+        elif stat == "Systems":
+            async with ctx.typing():
+                await asyncio.sleep(.5)
+                await ctx.send("Just one second, let me check.")
+                await asyncio.sleep(1)
+                await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
+                                    str(check_key(v, "corp"))
+                                    for v in exogen_stats[1:12:10]]).replace("'", "").replace('[', '').replace(']', ''))
+        elif stat == "Anomalies":
+            async with ctx.typing():
+                await asyncio.sleep(.5)
+                await ctx.send("Just one second, let me check.")
+                await asyncio.sleep(1)
+                await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
+                                    str(check_key(v, "corp"))
+                                    for v in exogen_stats[2:11:8]]).replace("'", "").replace('[', '').replace(']', ''))
+        elif stat == "Planets":
+            async with ctx.typing():
+                await asyncio.sleep(.5)
+                await ctx.send("Just one second, let me check.")
+                await asyncio.sleep(1)
+                await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
+                                    str(check_key(v, "corp"))
+                                    for v in exogen_stats[3:14:10]]).replace("'", "").replace('[', '').replace(']', ''))
+        elif stat == "SOS":
+            async with ctx.typing():
+                await asyncio.sleep(.5)
+                await ctx.send("Just one second, let me check.")
+                await asyncio.sleep(1)
+                await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
+                                    str(check_key(v, "corp"))
+                                    for v in [exogen_stats[4], exogen_stats[15], exogen_stats[16]]])
+                               .replace("'", "").replace('[', '').replace(']', ''))
+        elif stat == "Resources":
+            async with ctx.typing():
+                await asyncio.sleep(.5)
+                await ctx.send("Just one second, let me check.")
+                await asyncio.sleep(1)
+                await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
+                                    str(check_key(v, "corp"))
+                                    for v in [exogen_stats[5], exogen_stats[17], exogen_stats[18]]])
+                               .replace("'", "").replace('[', '').replace(']', ''))
+        elif stat == "Corps":
+            async with ctx.typing():
+                await asyncio.sleep(.5)
+                await ctx.send("Just one second, let me check.")
+                await asyncio.sleep(2.5)
+                await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
+                                    str(check_key(v, "corp"))
+                                    for v in exogen_stats[0:6]]).replace("'", "").replace('[', '').replace(']', ''))
+        elif stat == "Exogen":
+            async with ctx.typing():
+                await asyncio.sleep(.5)
+                await ctx.send("Just one second, let me check.")
+                await asyncio.sleep(2.5)
+                await ctx.send(str([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
+                                    str(check_key(v, "corp"))
+                                    for v in exogen_stats[7:22]]).replace("'", "").replace('[', '').replace(']', ''))
+        else:
+            async with ctx.typing():
+                await asyncio.sleep(.5)
+                await ctx.send("Please try again with a valid input. "
+                               "If you need help try '!help stats' to see the usage and valid inputs.")
+
+
+
     # # @tasks.loop(seconds=60*60*24) # loop for checking donor status once per day
+
     # @tasks.loop(seconds=60*60*24)
     # async def donor_check(self, ctx):
     #     # receive the member ID/name from the event that looks up users that have stopped donating
@@ -102,7 +232,7 @@ class Advisors(commands.Cog):
         await ctx.member.send("Since it looks like you've disabled the donations you will be soon removed from the "
                               "donors channel. If you think that could be a mistake, please contact us at pm@t-h-m.com "
                               "as soon as possible. Thank you for your donations! It really means a lot for us!")
-        await asyncio.sleep(60*5)
+        await asyncio.sleep(60 * 5)
         guild = client.get_guild(id=target_server_id)
         role = ctx.guild.get_role(id=target_role_id)  # Test server Guild and Role IDs
         await member.remove_roles(role)
@@ -134,7 +264,7 @@ class Advisors(commands.Cog):
         aliases=['rocket']
     )
     @commands.has_any_role('Advisor', 'Assistant', 'Supervisor', 'Manager')
-    @commands.cooldown(1, 60*60*24, commands.BucketType.user)
+    @commands.cooldown(1, 60 * 60 * 24, commands.BucketType.user)
     async def rocket(self, ctx):
         async with ctx.typing():
             await asyncio.sleep(2)
@@ -157,8 +287,8 @@ class Advisors(commands.Cog):
     @rocket.error
     async def rocket_error(self, ctx, error):
         if isinstance(error, commands.CommandOnCooldown):
-            msg = 'Rocket can be launched again {:.0f}h {:.0f}m {:.0f}s'\
-                .format(error.retry_after//(60*60), (error.retry_after % 60*60)//60, error.retry_after % 60)
+            msg = 'Rocket can be launched again {:.0f}h {:.0f}m {:.0f}s' \
+                .format(error.retry_after // (60 * 60), (error.retry_after % 60 * 60) // 60, error.retry_after % 60)
             await ctx.send(msg)
         elif isinstance(error, commands.MissingPermissions):
             text = f"I'm sorry {ctx.message.author}, I can't let you do that."
