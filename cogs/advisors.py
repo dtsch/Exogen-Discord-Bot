@@ -133,11 +133,12 @@ class Advisors(commands.Cog):
                 result = "\n".join([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
                                     str(check_key(v, "corp"))
                                     for v in exogen_stats]).replace("'", "").replace('[', '').replace(']', '')
-                await ctx.send(discord.Embed(
+                payload = discord.Embed(
                     title="All Stats",
                     description=result,
                     colour=discord.Color.blue()
-                ))
+                )
+                await ctx.send(embed=payload)
 
         elif stat == "Distance":
             async with ctx.typing():
