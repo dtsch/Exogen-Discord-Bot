@@ -246,6 +246,12 @@ class Advisors(commands.Cog):
                 await ctx.send("Please try again with a valid input. "
                                "If you need help try '!help stats' to see the usage and valid inputs.")
 
+    @stats.error
+    async def stats_error(self, error, ctx):
+        if isinstance(error, commands.MissingPermissions):
+            text = "Sorry {}, you do not have permissions to do that!".format(ctx.message.author)
+            await ctx.send(ctx.message.channel, text)
+
 
 
     # # @tasks.loop(seconds=60*60*24) # loop for checking donor status once per day
