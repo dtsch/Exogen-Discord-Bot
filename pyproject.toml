@@ -15,4 +15,5 @@ discord = "^1.0.1"
 numpy = "^1.20.0"
 python = "^3.8"
 discord-py-slash-command = "^3.0.1"
+bs4 = "^0.0.1"
 [tool.poetry.dev-dependencies]
