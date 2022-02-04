@@ -91,6 +91,7 @@ class Advisors(commands.Cog):
         name="stats",
         description="Bot displays chosen Exogen stats",
         help='displays corp stats',
+        aliases= ['s', 'leader', 'leaders'],
         usage="<All|Distance|Systems|Anomalies|Planets|SOS|Resources|Corps|Exogen>"
     )
     @commands.has_any_role('Server Booster', 'Pale Blue Dot', 'Advisor', 'Assistant', 'Supervisor', 'Manager')
@@ -127,7 +128,7 @@ class Advisors(commands.Cog):
         async with ctx.typing():
             await asyncio.sleep(.5)
             await ctx.send("Let me check that for you, just a sec.")
-        if stat == "All" or stat == "all":
+        if stat in ["All", "all"]:
             async with ctx.typing():
                 await asyncio.sleep(3)
                 result = "\n".join(["**" + v["title"] + ":** " + str(v["value"]) + str(check_key(v, "system")) +
@@ -140,7 +141,7 @@ class Advisors(commands.Cog):
                 )
                 await ctx.send(embed=payload)
 
-        elif stat == "Distance" or stat == "distance":
+        elif stat in ["Distance", "distance"]:
             async with ctx.typing():
                 await asyncio.sleep(.5)
                 result = "\n".join(["**" + v["title"] + ":** " + str(v["value"]) + str(check_key(v, "system")) +
@@ -153,7 +154,7 @@ class Advisors(commands.Cog):
                     colour=discord.Color.blue()
                 )
                 await ctx.send(embed=payload)
-        elif stat == "Systems" or stat == "systems":
+        elif stat in ["Systems", "systems", "Probes", "probes"]:
             async with ctx.typing():
                 await asyncio.sleep(.5)
                 result = "\n".join(["**" + v["title"] + ":** " + str(v["value"]) + str(check_key(v, "system")) +
@@ -165,7 +166,7 @@ class Advisors(commands.Cog):
                     colour=discord.Color.blue()
                 )
                 await ctx.send(embed=payload)
-        elif stat == "Anomalies" or stat == "anomalies":
+        elif stat in ["Anomalies", "anomalies"]:
             async with ctx.typing():
                 await asyncio.sleep(.5)
                 result = "\n".join(["**" + v["title"] + ":** " + str(v["value"]) + str(check_key(v, "system")) +
@@ -177,7 +178,7 @@ class Advisors(commands.Cog):
                     colour=discord.Color.blue()
                 )
                 await ctx.send(embed=payload)
-        elif stat == "Planets" or stat == "planets":
+        elif stat in ["Planets", "planets", "Pioneers", "pioneers"]:
             async with ctx.typing():
                 await asyncio.sleep(.5)
                 result = "\n".join(["**" + v["title"] + ":** " + str(v["value"]) + str(check_key(v, "system")) +
@@ -189,7 +190,7 @@ class Advisors(commands.Cog):
                     colour=discord.Color.blue()
                 )
                 await ctx.send(embed=payload)
-        elif stat == "SOS" or stat == "sos":
+        elif stat in ["SOS", "sos"]:
             async with ctx.typing():
                 await asyncio.sleep(.5)
                 result = "\n".join(["**" + v["title"] + ":** " + str(v["value"]) + str(check_key(v, "system")) +
@@ -202,7 +203,7 @@ class Advisors(commands.Cog):
                     colour=discord.Color.blue()
                 )
                 await ctx.send(embed=payload)
-        elif stat == "Resources" or stat == "resources":
+        elif stat in ["Resources", "resources"]:
             async with ctx.typing():
                 await asyncio.sleep(1)
                 result = "\n".join(["**" + v["title"] + ":** " + str(v["value"]) + str(check_key(v, "system")) +
@@ -215,7 +216,7 @@ class Advisors(commands.Cog):
                     colour=discord.Color.blue()
                 )
                 await ctx.send(embed=payload)
-        elif stat == "Corps" or stat == "corps":
+        elif stat in ["Corps", "corps"]:
             async with ctx.typing():
                 await asyncio.sleep(1.5)
                 result = "\n".join(["**" + v["title"] + ":** " + str(v["value"]) + str(check_key(v, "system")) +
@@ -228,7 +229,7 @@ class Advisors(commands.Cog):
                     colour=discord.Color.blue()
                 )
                 await ctx.send(embed=payload)
-        elif stat == "Exogen" or stat == "exogen":
+        elif stat in ["Exogen", "exogen"]:
             async with ctx.typing():
                 await asyncio.sleep(1.5)
                 result = "\n".join(["**" + v["title"] + ":** " + str(v["value"]) + str(check_key(v, "system")) +
