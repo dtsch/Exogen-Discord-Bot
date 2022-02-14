@@ -288,7 +288,7 @@ class Calculation(commands.Cog):
         aliases=['rc'],
         help='calculates system name',
         usage='<rad-Z>\n'
-              'ex: !d 44053-00043'
+              'ex: !rc 44053-00043'
     )
     @commands.dm_only()
     # function that command runs
