@@ -50,7 +50,7 @@ class Calculation(commands.Cog):
         return
 
     @distance.error
-    async def dm_error(self, ctx):
+    async def distance_error(self, ctx):
         if isinstance(self, commands.CheckFailure):
             text = "Sorry, this can only be used in DMs."
             await ctx.send(ctx.message.channel, text)
@@ -160,7 +160,7 @@ class Calculation(commands.Cog):
         return
 
     @commission.error
-    async def dm_error(self, ctx):
+    async def commision_error(self, ctx):
         if isinstance(self, commands.CheckFailure):
             text = "Sorry, this can only be used in DMs."
             await ctx.send(ctx.message.channel, text)
@@ -274,7 +274,38 @@ class Calculation(commands.Cog):
         return
 
     @missions.error
-    async def dm_error(self, ctx):
+    async def missions_error(self, ctx):
+        if isinstance(self, commands.CheckFailure):
+            text = "Sorry, this can only be used in DMs."
+            await ctx.send(ctx.message.channel, text)
+
+
+
+    # command info
+    @commands.command(
+        name='rad_convert',
+        description='Command that converts a Rad-Z to a system name XY.',
+        aliases=['rc'],
+        help='calculates system name',
+        usage='<rad-Z>\n'
+              'ex: !d 44053-00043'
+    )
+    @commands.dm_only()
+    # function that command runs
+    async def rad_convert(self, ctx, rad_z):
+        if rad_z == '':  # checking for blank arg
+            await ctx.author.send("`***ERROR:*** You need to list the first system's coordinates.`")
+        elif not re.search(r"\d{5}-\d{5}", rad_z):  # checking for arg format
+            await ctx.author.send("`***ERROR:*** You must enter the coordinates in the #####-##### format.`")
+        else:  # if passes checks, parses args for calculation
+            r = int(re.search(r"^\d{5}", rad_z).group(0))
+            z = int(re.search(r"\d{5}$", rad_z).group(0))
+            sys_xy = str(np.around(np.cos(r/10000)*((z/100)+10.9999),0)) + str(np.around(np.sin(r/10000)*((z/100)+10.9999)))
+            await ctx.author.send("`The system at {} is {}.`".format(rad_z,sys_xy))
+        return
+
+    @distance.error
+    async def rad_convert_error(self, ctx):
         if isinstance(self, commands.CheckFailure):
             text = "Sorry, this can only be used in DMs."
             await ctx.send(ctx.message.channel, text)
