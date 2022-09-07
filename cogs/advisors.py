@@ -25,7 +25,7 @@ main_page = "https://exogen.space/"
 
 def check_key(dictionary, k):
     if k in dictionary:
-        return str(" " + dictionary[k])
+        return str(", " + dictionary[k])
     else:
         return ""
 
@@ -91,6 +91,7 @@ class Advisors(commands.Cog):
         name="stats",
         description="Bot displays chosen Exogen stats",
         help='displays corp stats',
+        aliases= ['s', 'leader', 'leaders'],
         usage="<All|Distance|Systems|Anomalies|Planets|SOS|Resources|Corps|Exogen>"
     )
     @commands.has_any_role('Server Booster', 'Pale Blue Dot', 'Advisor', 'Assistant', 'Supervisor', 'Manager')
@@ -127,10 +128,10 @@ class Advisors(commands.Cog):
         async with ctx.typing():
             await asyncio.sleep(.5)
             await ctx.send("Let me check that for you, just a sec.")
-        if stat == "All" or stat == "all":
+        if stat in ["All", "all"]:
             async with ctx.typing():
                 await asyncio.sleep(3)
-                result = "\n".join([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
+                result = "\n".join(["**" + v["title"] + ":** " + str(v["value"]) + str(check_key(v, "system")) +
                                     str(check_key(v, "corp"))
                                     for v in exogen_stats]).replace("'", "").replace('[', '').replace(']', '')
                 payload = discord.Embed(
@@ -140,22 +141,23 @@ class Advisors(commands.Cog):
                 )
                 await ctx.send(embed=payload)
 
-        elif stat == "Distance" or stat == "distance":
+        elif stat in ["Distance", "distance"]:
             async with ctx.typing():
                 await asyncio.sleep(.5)
-                result = "\n".join([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
+                result = "\n".join(["**" + v["title"] + ":** " + str(v["value"]) + str(check_key(v, "system")) +
                                     str(check_key(v, "corp"))
-                                    for v in exogen_stats[0]]).replace("'", "").replace('[', '').replace(']', '')
+                                    for v in exogen_stats[0]])\
+                    .replace("'", "").replace('[', '').replace(']', '')
                 payload = discord.Embed(
                     title="Distance Stats",
                     description=result,
                     colour=discord.Color.blue()
                 )
                 await ctx.send(embed=payload)
-        elif stat == "Systems" or stat == "systems":
+        elif stat in ["Systems", "systems", "Probes", "probes"]:
             async with ctx.typing():
                 await asyncio.sleep(.5)
-                result = "\n".join([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
+                result = "\n".join(["**" + v["title"] + ":** " + str(v["value"]) + str(check_key(v, "system")) +
                                     str(check_key(v, "corp"))
                                     for v in exogen_stats[1:12:10]]).replace("'", "").replace('[', '').replace(']', '')
                 payload = discord.Embed(
@@ -164,10 +166,10 @@ class Advisors(commands.Cog):
                     colour=discord.Color.blue()
                 )
                 await ctx.send(embed=payload)
-        elif stat == "Anomalies" or stat == "anomalies":
+        elif stat in ["Anomalies", "anomalies"]:
             async with ctx.typing():
                 await asyncio.sleep(.5)
-                result = "\n".join([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
+                result = "\n".join(["**" + v["title"] + ":** " + str(v["value"]) + str(check_key(v, "system")) +
                                     str(check_key(v, "corp"))
                                     for v in exogen_stats[2:11:8]]).replace("'", "").replace('[', '').replace(']', '')
                 payload = discord.Embed(
@@ -176,24 +178,24 @@ class Advisors(commands.Cog):
                     colour=discord.Color.blue()
                 )
                 await ctx.send(embed=payload)
-        elif stat == "Planets" or stat == "planets":
+        elif stat in ["Planets", "planets", "Pioneers", "pioneers"]:
             async with ctx.typing():
                 await asyncio.sleep(.5)
-                result = "\n".join([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
+                result = "\n".join(["**" + v["title"] + ":** " + str(v["value"]) + str(check_key(v, "system")) +
                                     str(check_key(v, "corp"))
-                                    for v in exogen_stats[3:14:10]]).replace("'", "").replace('[', '').replace(']', '')
+                                    for v in exogen_stats[3:13:9]]).replace("'", "").replace('[', '').replace(']', '')
                 payload = discord.Embed(
                     title="Planets Stats",
                     description=result,
                     colour=discord.Color.blue()
                 )
                 await ctx.send(embed=payload)
-        elif stat == "SOS" or stat == "sos":
+        elif stat in ["SOS", "sos"]:
             async with ctx.typing():
                 await asyncio.sleep(.5)
-                result = "\n".join([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
+                result = "\n".join(["**" + v["title"] + ":** " + str(v["value"]) + str(check_key(v, "system")) +
                                     str(check_key(v, "corp"))
-                                    for v in [exogen_stats[4], exogen_stats[14], exogen_stats[15]]])\
+                                    for v in [exogen_stats[4], exogen_stats[13], exogen_stats[14]]])\
                     .replace("'", "").replace('[', '').replace(']', '')
                 payload = discord.Embed(
                     title="Small Orbital Station Stats",
@@ -201,12 +203,12 @@ class Advisors(commands.Cog):
                     colour=discord.Color.blue()
                 )
                 await ctx.send(embed=payload)
-        elif stat == "Resources" or stat == "resources":
+        elif stat in ["Resources", "resources"]:
             async with ctx.typing():
                 await asyncio.sleep(1)
-                result = "\n".join([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
+                result = "\n".join(["**" + v["title"] + ":** " + str(v["value"]) + str(check_key(v, "system")) +
                                     str(check_key(v, "corp"))
-                                    for v in [exogen_stats[5], exogen_stats[16], exogen_stats[17]]])\
+                                    for v in [exogen_stats[5], exogen_stats[15], exogen_stats[16]]])\
                     .replace("'", "").replace('[', '').replace(']', '')
                 payload = discord.Embed(
                     title="Resources Stats",
@@ -214,24 +216,24 @@ class Advisors(commands.Cog):
                     colour=discord.Color.blue()
                 )
                 await ctx.send(embed=payload)
-        elif stat == "Corps" or stat == "corps":
+        elif stat in ["Corps", "corps"]:
             async with ctx.typing():
                 await asyncio.sleep(1.5)
-                result = "\n".join([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
+                result = "\n".join(["**" + v["title"] + ":** " + str(v["value"]) + str(check_key(v, "system")) +
                                     str(check_key(v, "corp"))
                                     for v in exogen_stats[0:6]])\
-                    .replace("'", "").replace('[', '').replace(']', '').join("\n")
+                    .replace("'", "").replace('[', '').replace(']', '')
                 payload = discord.Embed(
                     title="Corporation Stats",
                     description=result,
                     colour=discord.Color.blue()
                 )
                 await ctx.send(embed=payload)
-        elif stat == "Exogen" or stat == "exogen":
+        elif stat in ["Exogen", "exogen"]:
             async with ctx.typing():
                 await asyncio.sleep(1.5)
-                result = "\n".join([v["title"] + ": " + str(v["value"]) + str(check_key(v, "system")) +
-                                    str(check_key(v, "corp") + "\n")
+                result = "\n".join(["**" + v["title"] + ":** " + str(v["value"]) + str(check_key(v, "system")) +
+                                    str(check_key(v, "corp"))
                                     for v in exogen_stats[7:22]]).replace("'", "").replace('[', '').replace(']', '')
                 payload = discord.Embed(
                     title="Collective Stats",
@@ -244,6 +246,12 @@ class Advisors(commands.Cog):
                 await asyncio.sleep(.5)
                 await ctx.send("Please try again with a valid input. "
                                "If you need help try '!help stats' to see the usage and valid inputs.")
+
+    @stats.error
+    async def stats_error(self, error, ctx):
+        if isinstance(error, commands.MissingPermissions):
+            text = "Sorry {}, you do not have permissions to do that!".format(ctx.message.author)
+            await ctx.send(ctx.message.channel, text)
 
 
 
