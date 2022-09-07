@@ -33,28 +33,30 @@ bot = commands.Bot(
 slash = SlashCommand(bot, sync_commands=True)
 
 # background task to keep bot awake when web-hosted on Repl.it
-status = cycle(['Exogen  ░░░░░░░░',
-                'Exogen  ░░░░░░░▒',
-                'Exogen  ░░░░░░▒▓',
-                'Exogen  ░░░░░▒▓▒',
-                'Exogen  ░░░░▒▓▒░',
-                'Exogen  ░░░▒▓▒░░',
-                'Exogen  ░░▒▓▒░░░',
-                'Exogen  ░▒▓▒░░░░',
-                'Exogen  ▒▓▒░░░░░',
-                'Exogen  ▓▒░░░░░░',
-                'Exogen  ▒░░░░░░░',
-                'Exogen  ░░░░░░░░',
-                'Exogen  ▒░░░░░░░',
-                'Exogen  ▓▒░░░░░░',
-                'Exogen  ▒▓▒░░░░░',
-                'Exogen  ░▒▓▒░░░░',
-                'Exogen  ░░▒▓▒░░░',
-                'Exogen  ░░░▒▓▒░░',
-                'Exogen  ░░░░▒▓▒░',
-                'Exogen  ░░░░░▒▓▒',
-                'Exogen  ░░░░░░▒▓',
-                'Exogen  ░░░░░░░▒'])
+# status = cycle(['Exogen  ░░░░░░░░',
+#                 'Exogen  ░░░░░░░▒',
+#                 'Exogen  ░░░░░░▒▓',
+#                 'Exogen  ░░░░░▒▓▒',
+#                 'Exogen  ░░░░▒▓▒░',
+#                 'Exogen  ░░░▒▓▒░░',
+#                 'Exogen  ░░▒▓▒░░░',
+#                 'Exogen  ░▒▓▒░░░░',
+#                 'Exogen  ▒▓▒░░░░░',
+#                 'Exogen  ▓▒░░░░░░',
+#                 'Exogen  ▒░░░░░░░',
+#                 'Exogen  ░░░░░░░░',
+#                 'Exogen  ▒░░░░░░░',
+#                 'Exogen  ▓▒░░░░░░',
+#                 'Exogen  ▒▓▒░░░░░',
+#                 'Exogen  ░▒▓▒░░░░',
+#                 'Exogen  ░░▒▓▒░░░',
+#                 'Exogen  ░░░▒▓▒░░',
+#                 'Exogen  ░░░░▒▓▒░',
+#                 'Exogen  ░░░░░▒▓▒',
+#                 'Exogen  ░░░░░░▒▓',
+#                 'Exogen  ░░░░░░░▒'])
+# status = 'Exogen'
+status = 'Beyond Humanity: Colonies'
 
 
 # @bot.event
@@ -63,9 +65,9 @@ status = cycle(['Exogen  ░░░░░░░░',
 #     print("Your bot is ready")
 
 
-@tasks.loop(seconds=2)
-async def change_status():
-    await bot.change_presence(activity=discord.Game(next(status)))
+# @tasks.loop(seconds=2)
+# async def change_status():
+#     await bot.change_presence(activity=discord.Game(next(status)))
 
 # gathering the commands
 cogs = [
@@ -120,8 +122,8 @@ async def on_member_join(member):
     await channel.edit(name=f'members {guild.member_count}')
     rules = bot.get_channel(704733802223894648)
     nav = bot.get_channel(771885969715626005)
-    role = discord.utils.get(member.guild.roles, id=906375433329725451)
-    await member.add_roles(role)
+    # role = discord.utils.get(member.guild.roles, id=906375433329725451)
+    # await member.add_roles(role)
     await member.send("Welcome, {}!".format(member.name))
     await member.send("Please check out the {} before heading over to {} to see where things are located."
                       .format(rules.mention, nav.mention))
@@ -192,8 +194,8 @@ async def on_ready():
     print(f'Logged in as: {bot.user.name} - {bot.user.id}')
     print(f'Discord version is: {discord.__version__}')
     print('------------------------------------------------------')
-    await bot.change_presence(activity=discord.Game(name="Exogen"))
-    change_status.start()
+    await bot.change_presence(activity=discord.Game(status))
+    # change_status.start()
     for cog in cogs:
         bot.load_extension(cog)
         print(f'{cog} is ready.')
