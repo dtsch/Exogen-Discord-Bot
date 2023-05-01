@@ -10,7 +10,7 @@ name = "exogen-discord-bot"
 version = "0.1.0"
 [tool.poetry.dependencies]
 DateTime = "^4.3"
-Flask = "^1.1.2"
+Flask = "^2.3.2"
 discord = "^1.0.1"
 numpy = "^1.22.0"
 python = "^3.8"
